@@ -4,9 +4,9 @@
  *  Created on: 2015年10月6日
  *      Author: lql
  */
-#include "bufmanager/BufPageManager.h"
-#include "fileio/FileManager.h"
-#include "utils/pagedef.h"
+#include "../bufmanager/BufPageManager.h"
+#include "../fileio/FileManager.h"
+#include "../utils/pagedef.h"
 #include <iostream>
 
 using namespace std;
