@@ -32,6 +32,15 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../bufmanager/BufPageManager.h" />
+		<Unit filename="../bufmanager/FindReplace.h" />
+		<Unit filename="../fileio/FileManager.h" />
+		<Unit filename="../fileio/FileTable.h" />
+		<Unit filename="../utils/MyBitMap.h" />
+		<Unit filename="../utils/MyHashMap.h" />
+		<Unit filename="../utils/MyLinkList.h" />
+		<Unit filename="../utils/compare.h" />
+		<Unit filename="../utils/pagedef.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
