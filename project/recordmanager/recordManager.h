@@ -62,10 +62,11 @@ public:
         fileManager->openFile(name, fileID);
 		int pageID = 0;
 		int index;
-		BufType b = bpm->allocPage(fileID, pageID, index, false);
+		BufType b = bufPageManager->allocPage(fileID, pageID, index, false);
         b[0] = pageID;
+		b[1] = 1;
 		b += 32;
-        bpm->markDirty(index);
+        bufPageManager->markDirty(index);
 		fileManager->closeFile(name);
 		return true;
     }
@@ -75,13 +76,21 @@ public:
 	}
 
 	bool createTable(const char *name, int width) {
-		BufType b = bpm->allocPage(SQLID, 0, index, false);
-		e = b + PAGE_INT_NUM - PAGE_BOTTOM;
+		int index;
+		BufType b = bufPageManager->allocPage(SQLID, 0, index, false);
+		ByfType e = b + PAGE_INT_NUM - PAGE_BOTTOM;
+		int& pageNum = b[1];
 		b += PAGE_TOP;
 		while (b[0]) b += 4;
-		b[0] = 1, b[1] = e, b[2] = 
-        
-
+		while (e[0]) e -= e[0];
+		e[0] = ceil(strlen(name) / 4) + 1;
+		memcpy(e - e[0] + 1, name, strlen(name));
+		b[0] = 1, b[1] = e, b[2] = pageNum++;
+		int pageID = b[2];
+		bufPageManager->markDirty(index);
+		b = bufPageManager->allocPage(SQLID, pageID, index, false);
+		b[0] = pageID;
+		bufPageManager->markDirty(index);
 	}
 
 
