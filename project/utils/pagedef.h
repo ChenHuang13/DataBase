@@ -7,6 +7,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+
+#define PAGE_TOP 32
+#define PAGE_BOTTOM 96
 /*
  * 一个页面中的字节数
  */
