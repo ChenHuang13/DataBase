@@ -10,11 +10,10 @@ class Query {
 private:
     int start;
     int end;
-    int *search_part;
+    BufType search_part;
 public:
-    Query() { }
-
-    Query(int start, int end, int *search_part) : start(start), end(end), search_part(search_part) { }
+    Query(int start = -1, int end = -1, BufType search_part = nullptr) : start(start), end(end),
+                                                                         search_part(search_part) { }
 
     virtual ~Query() { }
 
@@ -34,11 +33,11 @@ public:
         Query::start = start;
     }
 
-    int *getSearch_part() const {
+    BufType getSearch_part() const {
         return search_part;
     }
 
-    void setSearch_part(int *search_part) {
+    void setSearch_part(BufType search_part) {
         Query::search_part = search_part;
     }
 };

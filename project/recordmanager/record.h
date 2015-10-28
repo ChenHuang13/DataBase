@@ -5,21 +5,29 @@
 #ifndef DATABASE_RECORD_H
 #define DATABASE_RECORD_H
 
+#include "cstring"
+#include "../utils/pagedef.h"
+
 //单条记录类
 class Record {
 private:
-    int *buffer;//待插入的记录
+    BufType buffer;//待插入的记录
+
+    char *table_name;
 public:
+    int result_begin, result_end;
+    int weith;
     Record() { }
 
     virtual ~Record() { }
 
-    int *getBuffer() const {
+    BufType getBuffer() const {
         return buffer;
     }
 
-    void setBuffer(int *buffer) {
-        Record::buffer = buffer;
+    void setBuffer(BufType buffer, int weith) {
+        this->weith = weith;
+        this->buffer = buffer;
     }
 };
 
