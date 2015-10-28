@@ -15,7 +15,7 @@ int main() {
     RecordManager *recordManager = new RecordManager();
     recordManager->createSQL("my.db");
     recordManager->openSQL("my.db");
-    int record_lenth;
+    int record_lenth = 10;
     recordManager->createTable("Student", record_lenth);
 
     cout << "insert test" << endl; //插入0到9的数据
@@ -25,8 +25,8 @@ int main() {
         memset(data, 0, record_lenth);
         data[0] = (unsigned int) i;
         record->setBuffer(data, record_lenth);
-        record->weith = record_lenth;
-        recordManager->insert(*record); //记录插入测试
+        record->width = record_lenth;
+        recordManager->insertRecord(*record); //记录插入测试
     }
 
     recordManager->query(*(new Query()), true); //记录查询测试，查询所有数据
@@ -49,8 +49,8 @@ int main() {
         memset(data, 0, record_lenth);
         data[0] = (unsigned int) i;
         record->setBuffer(data, record_lenth);
-        record->weith = record_lenth;
-        recordManager->delete_record(*record); //记录删除测试
+        record->width = record_lenth;
+        recordManager->deleteRecord(*record); //记录删除测试
     }
 
     recordManager->query(*(new Query()), true); //记录查询测试

@@ -33,12 +33,12 @@ public:
         Query::start = start;
     }
 
-    BufType getSearch_part() const {
-        return search_part;
+    BufType getSearchPart() const {
+        return searchPart;
     }
 
-    void setSearch_part(BufType search_part) {
-        Query::search_part = search_part;
+    void setSearchPart(BufType search_part) {
+        Query::searchPart = searchPart;
     }
 };
 

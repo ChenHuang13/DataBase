@@ -13,10 +13,10 @@ class Record {
 private:
     BufType buffer;//待插入的记录
 
-    char *table_name;
+    int *tableID;
 public:
     int result_begin, result_end;
-    int weith;
+    int width;
     Record() { }
 
     virtual ~Record() { }
@@ -25,8 +25,8 @@ public:
         return buffer;
     }
 
-    void setBuffer(BufType buffer, int weith) {
-        this->weith = weith;
+    void setBuffer(BufType buffer, int width) {
+        this->width = width;
         this->buffer = buffer;
     }
 };
