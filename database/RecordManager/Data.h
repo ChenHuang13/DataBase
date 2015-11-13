@@ -8,4 +8,9 @@
 #ifndef DATABASE_DATA_H
 #define DATABASE_DATA_H
 
+class Data{
+public:
+
+};
+
 #endif //DATABASE_DATA_H

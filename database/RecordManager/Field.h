@@ -7,4 +7,9 @@
 #ifndef DATABASE_FIELD_H
 #define DATABASE_FIELD_H
 
+class Field{
+public:
+
+};
+
 #endif //DATABASE_FIELD_H

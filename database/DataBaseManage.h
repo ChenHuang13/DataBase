@@ -9,22 +9,47 @@
 
 #include <iostream>
 #include "define.h"
+#include "Debug.h"
+#include "Order.h"
 #include "RecordManager/RecordManager.h"
 #include "QueryManager/QueryManager.h"
 #include "SystemManager/SystemManager.h"
+#include "IndexManager/IndexManager.h"
 
 using namespace std;
 
-class DataBaseManager{
+class DataBaseManager {
 public:
-    void globalInit(){
+    SystemManager *systemManager;
+    QueryManager *queryManager;
+    IndexManager *indexManager;
 
+    //全局初始化
+    void globalInit() {
+        systemManager = new SystemManager();
+        queryManager  = new QueryManager();
+        indexManager  = new IndexManager();
     }
 
-    void run(){
+    //运行管理
+    void run() {
         string line;
-        while(cin >>line)
-            cout << line << endl;
+        while (cin >> line){
+            Order order(line);
+            debug << order << endl;
+            switch (order.type){
+                case DDL:
+                    systemManager->run(order);
+                    break;
+                case DML:
+                    queryManager->run(order);
+                    break;
+                case ERR:
+                default:
+                    debug << "解析命令出错！"<<endl;
+                    break;
+            }
+        }
     }
 };
 

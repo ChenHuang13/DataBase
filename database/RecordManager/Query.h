@@ -7,4 +7,9 @@
 #ifndef DATABASE_QUERY_H
 #define DATABASE_QUERY_H
 
+class Query{
+public:
+
+};
+
 #endif //DATABASE_QUERY_H

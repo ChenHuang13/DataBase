@@ -7,4 +7,9 @@
 #ifndef DATABASE_RECORD_H
 #define DATABASE_RECORD_H
 
+class Record{
+public:
+
+};
+
 #endif //DATABASE_RECORD_H

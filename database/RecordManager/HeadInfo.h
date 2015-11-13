@@ -7,4 +7,9 @@
 #ifndef DATABASE_HEADINFO_H
 #define DATABASE_HEADINFO_H
 
+class HeadInfo{
+public:
+
+};
+
 #endif //DATABASE_HEADINFO_H

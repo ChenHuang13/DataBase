@@ -10,9 +10,12 @@
 #ifndef DATABASE_SYSTEMMANAGER_H
 #define DATABASE_SYSTEMMANAGER_H
 
+
 class SystemManager{
 public:
+    void run(Order order){
 
+    }
 };
 
 #endif //DATABASE_SYSTEMMANAGER_H

@@ -2,9 +2,14 @@
 // Created by huangsy13 on 11/13/15.
 //
 
+//定义一些枚举体和常量
+
 #ifndef DATABASE_DEFINE_H
 #define DATABASE_DEFINE_H
 
-enum pageType{recordPage, tablePage, indexPage};
+#include <cstring>
+
+enum PageType{recordPage, tablePage, indexPage};
+enum OrderType{DDL, DML, ERR};
 
 #endif //DATABASE_DEFINE_H

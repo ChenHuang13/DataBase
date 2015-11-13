@@ -7,4 +7,9 @@
 #ifndef DATABASE_TABLE_H
 #define DATABASE_TABLE_H
 
+class Table{
+public:
+
+};
+
 #endif //DATABASE_TABLE_H
