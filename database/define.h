@@ -11,5 +11,6 @@
 
 enum PageType{recordPage, tablePage, indexPage};
 enum OrderType{DDL, DML, ERR};
+typedef int PageID,FileID;
 
 #endif //DATABASE_DEFINE_H

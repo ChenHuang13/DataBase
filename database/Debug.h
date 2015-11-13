@@ -13,8 +13,7 @@
 
 using namespace std;
 
-struct Debug
-{
+struct Debug {
     Debug operator <<(const int   n) { cout<<n; return *this;}
     Debug operator <<(const float n) { cout<<n; return *this;}
     Debug operator <<(const double n){ cout<<n; return *this;}
@@ -22,9 +21,7 @@ struct Debug
     Debug operator <<(const char* s) { cout<<s; return *this;}
     Debug operator <<(const string s){ cout<<s; return *this;}
     Debug operator <<(ostream& (*op)(ostream& ) ){ cout << endl;return *this;}
-
     Debug operator <<(const Order o){ cout<<o.line; return *this;}
-
 }debug;
 
 

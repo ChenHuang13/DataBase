@@ -13,6 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/HeadInfo.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Query.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Record.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/RecordManager/RecordID.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/RecordManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Table.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SystemManager/SystemManager.h" isTestSource="false" />
