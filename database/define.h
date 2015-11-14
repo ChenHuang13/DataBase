@@ -13,4 +13,6 @@ enum PageType{recordPage, tablePage, indexPage};
 enum OrderType{DDL, DML, ERR};
 typedef int PageID,FileID;
 
+const int MAX_FIELD_LENGTH = 128;
+
 #endif //DATABASE_DEFINE_H

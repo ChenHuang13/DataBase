@@ -15,6 +15,13 @@ private:
 	int fd[MAX_FILE_NUM];
 	MyBitMap* fm;
 	MyBitMap* tm;
+	int _destroyFile(const char *name) {
+		if (remove(name) != 0) {
+			cout << "fail" << endl;
+			return -1;
+		}
+		return 0;
+	}
 	int _createFile(const char* name) {
 		FILE* f = fopen(name, "a+");
 		if (f == NULL) {
@@ -116,6 +123,10 @@ public:
 		fileID = fm->findLeftOne();
 		fm->setBit(fileID, 0);
 		_openFile(name, fileID);
+		return true;
+	}
+	bool destroyFile(const char* name) {
+		_destroyFile(name);
 		return true;
 	}
 	int newType() {
