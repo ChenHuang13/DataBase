@@ -7,7 +7,8 @@
 
 class RecordID{
 public:
-
+	int page;
+	int slot;
 };
 
 #endif //DATABASE_RECORDID_H

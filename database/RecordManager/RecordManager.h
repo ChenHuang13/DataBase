@@ -6,6 +6,7 @@
 
 #ifndef DATABASE_RECORDMANAGER_H
 #define DATABASE_RECORDMANAGER_H
+#include "../utils/pagedef.h"
 #include "../bufmanager/BufPageManager.h"
 #include "RecordID.h"
 #include "../define.h"
@@ -13,10 +14,8 @@
 
 class RecordManager{
 private:
-	Field field;
 	BufPageManager *bpm;
 	FileManager *fm;
-	int fileID;
 public:
     RecordManager  () {
 		fm = new FileManager();
@@ -24,12 +23,8 @@ public:
 	}            // Constructor
     ~RecordManager () {
 		delete fm;
-		delete buf;
+		delete bpm;
 	}                           // Destructor
-
-	void getField() {
-		return field;
-	}
 
     void createFile  (const char *fileName, Field field){
 		this->field = field;
@@ -47,8 +42,11 @@ public:
 			strcpy(fieldName, field.getFieldName(i).c_str);
 			fieldName += MAX_FIELD_SIZE;
 			*((int*) fieldName) = field.getFieldSize(i);
+			fieldName += 1;
+			recordSize += field.getFieldSize(i);
 		}
 		bpm->markDirty(index);
+		bpm->close();
 		fm->close(fileID);
     }
     // Create a new file
@@ -56,12 +54,17 @@ public:
 		fm->destroyFile(fileName);
     }     // Destroy a file
 
-    void openFile    (const char *fileName, FileID fileID){
-		fm->openFile(fileName, fileID);
+    RecordHandle* openFile    (const char *fileName) {
+		FileManager _fm = new FileManager();
+		BufPageManager _bpm = new BufPageManager(_fm);
+
+		_fm->openFile(fileName, fileID);
 		int pageID = 0, index;
-		BufType b = bpm->allocPage(fileID, pageID, index, false);
+		BufType b = _bpm->getPage(fileID, pageID, index);
 		TableInfo* info = (TableInfo*) b;
 		int size = info.size;
+		int recordSize;
+		Field field;
 		field.list.clear();
 		BufType body = (BufType) &info.body;
 		char* fieldName = (char*) body;
@@ -69,16 +72,114 @@ public:
 			string field_name(fieldName);
 			fieldName += MAX_FIELD_SIZE;
 			int field_size = *((int*) fieldName);
+			fieldName += 1;
 			field.list.push_back(make_pair(field_name, field_size));
 		}
-		bpm->markDirty(index);
-		fm->close(fileID);
+
+		return new　RecordHandle(fileID, field, recordSize, _bpm, _fm);
     }
     // Open a file
 
-    void closeFile   (FileID fileID){
-		fm->close(fileID);
+    void closeFile   (RecordHandle* handle){
+		handle->bpm->close();
+		handle->fm->close(handle.fileID);
     }  // Close a file
+};
+
+
+class RecordHandle{
+private:
+	BufPageManager *bpm;
+	FileManager *fm;
+	int fileID;
+	int recordSize;
+	Field field;
+	
+public:
+    RecordHandle  (int fileID, Field field, int recordSize, BufPageManager* bpm, FileManager *fm): fileID(fileID), field(field), recordSize(recordSize + 1), bpm(bpm), fm(fm) {
+
+	}            // Constructor
+    ~RecordManager () {
+		delete fm;
+		delete bpm;
+	}                           // Destructor
+
+	void getField() {
+		return field;
+	}
+
+	Record getRecord(RecordID rid) {
+		int index;
+		BufType b = bpm->getPage(fileID, rid.page, inedx);
+		
+		PageInfo info = (PageInfo*) b;
+		BufType body = (BufType) &info.body;
+		body += recordSize * rid.slot;
+
+		if (*(body + recordSize - 1) == 1) return new Record();
+		else return new Record(field, body, rid);
+	}
+
+	RecordID insertRecord(Record rec) {
+		RecordID rid = rec.rid;
+		
+		int pageID = 1;
+		int index;
+		for (; ; pageID++) {
+			BufType b = bpm->getPage(fileID, pageID, inedx);
+		
+			PageInfo info = (PageInfo*) b;
+			int used = info->used;
+			if (used + recordSize < PAGE_SIZE) {
+				BufType body = (BufType) &info.body;
+
+				body += recordSize * rid.slot;
+		
+				rec.toBuffer(Field, body);
+				info->used += recordSize;
+				break;
+			}
+		}
+	}
+
+	void deleteRecord(RecordID rid) {
+
+		int index;
+		BufType b = bpm->getPage(fileID, rid.page, inedx);
+		
+		PageInfo info = (PageInfo*) b;
+		BufType body = (BufType) &info.body;
+		BufType r = body + recordSize * rid.slot;
+		*(r + recordSize - 1) = 1;// lazy delete
+		memcpy(d, r, recordSize * 4);
+
+		return new Record(Field, body, rid);
+		//TODO
+	}
+
+	void updateRecord(Record rec) {
+		RecordID rid = rec.rid;
+		
+		int index;
+		BufType b = bpm->getPage(fileID, rid.page, inedx);
+		
+		PageInfo info = (PageInfo*) b;
+		BufType body = (BufType) &info.body;
+
+		body += recordSize * rid.slot;
+		
+		rec.toBuffer(Field, body);
+	}
+
+	void forcePages(int pageID = -1) {
+		if (pageID == -1)
+			bpm->close();
+		else {
+			int index;
+			bpm->getPage(fielID, pageID, index);
+			bpm->writeBack(index);
+		}
+	}
 };
 
 
