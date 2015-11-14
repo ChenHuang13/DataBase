@@ -7,13 +7,15 @@
 #include <utility>
 #include <vector>
 #include <string>
+#include "../define.h"
 
 #ifndef DATABASE_FIELD_H
 #define DATABASE_FIELD_H
 
 class Field{
 public:
-	vector < pair < string, int > > list;
+	vector < pair < string , DataType > > list;//name & type's pair
+	vector < int > nums;
 	int size() {
 		return list.size();
 	}
@@ -22,8 +24,12 @@ public:
 		return list[fieldID].first;
 	}
 
-	int getFieldSize(int fieldID) {
+	DataType getFieldType(int fieldID) {
 		return list[fieldID].second;
+	}
+
+	int getFieldSize(int fieldID) {
+		return nums[fieldID];
 	}
 
 };

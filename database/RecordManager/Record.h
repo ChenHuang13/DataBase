@@ -5,6 +5,7 @@
 //Record类:一条抽象记录类，包含数据段和其他信息段。
 #include <vector>
 #include "Object.h"
+#include "../define.h"
 
 #ifndef DATABASE_RECORD_H
 #define DATABASE_RECORD_H
@@ -14,13 +15,14 @@ public:
 	RecordID rid;
 	vector < Object* > data;
 	Record() {
+		rid.page = rid.slot = -1;
 	}
 
 	Record(Field field, BufType buf, RecordID rid) {
 		//TODO
 	}
 
-	toBuffer(Field field, BufType buf) {
+	void toBuffer(Field field, BufType buf) {
 		//TODO
 	}
 
