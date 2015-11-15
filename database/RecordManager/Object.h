@@ -1,5 +1,7 @@
 //Object类:多种抽象数据类型的基类和派生类，包含各种类型。
 #include <vector>
+#include <cstring>
+#include <string>
 #include "Object.h"
 #include "../define.h"
 
@@ -9,7 +11,11 @@
 class Object　{
 public:
 	DataType type;
-	Object() : type(OBEJECT) {
+	Object() : type(BufType buf) {
+
+	}
+
+	virtual void toBuffer(BufType buf) {
 
 	}
 };
@@ -17,9 +23,13 @@ public:
 class Integer : public Object {
 public:
 	int data;
-	Integer(data) {
+	Integer(BufType buf) {
 		Object::type = INTEGER;
-		this->data = data;
+		this->data = *((int*)buf);
+	}
+
+	void toBuffer(BufType buf) {
+		*((int*)buf) = data;
 	}
 
 	int getInteger() {
@@ -30,12 +40,16 @@ public:
 class Float : public Object {
 public:
 	float data;
-	Float(data) {
+	Float(BufType buf) {
 		Object::type = FLOAT;
-		this->data = data;
+		this->data = *((float*)buf);
 	}
 
-	int getFloat() {
+	void toBuffer(BufType buf) {
+		*((float*)buf) = data;
+	}
+
+	float getFloat() {
 		return data;
 	}
 }
@@ -43,12 +57,16 @@ public:
 class String : public Object {
 public:
 	string data;
-	String(data) {
-		Object::type = String;
-		this->data = data;
+	String(BufType buf) {
+		Object::type = STRING;
+		data = (char*) buf;
 	}
 
-	int getString() {
+	void toBuffer(BufType buf) {
+		strcpy((char*)buf, data.c_str);
+	}
+
+	string getString() {
 		return data;
 	}
 }

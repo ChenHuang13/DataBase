@@ -5,6 +5,7 @@
 //Record类:一条抽象记录类，包含数据段和其他信息段。
 #include <vector>
 #include "Object.h"
+#include "Field.h"
 #include "../define.h"
 
 #ifndef DATABASE_RECORD_H
@@ -19,11 +20,35 @@ public:
 	}
 
 	Record(Field field, BufType buf, RecordID rid) {
-		//TODO
+		this->rid = rid;
+		data.clear();
+		for (int i = 0; i < field.size; ++i) {
+			switch (field.getFieldType()) {
+				OBEJECT:
+					data.push_back(new Object());
+					break;
+				INTEGER:
+					data.push_back(new Integer(buf));
+					break;
+				FLOAT:
+					data.push_back(new Float(buf));
+					break;
+				STRING:
+					data.push_back(new String(buf));
+					break;
+			}
+			buf += field.getFieldSize();
+		}
 	}
 
 	void toBuffer(Field field, BufType buf) {
-		//TODO
+		for (int i = 0; i < field.size; ++i) {
+			switch (field.getFieldType()) {
+					data[i].toBuffer(buf);
+					break;
+			}
+			buf += field.getFieldSize();
+		}
 	}
 
 	void destroy() {
@@ -32,7 +57,7 @@ public:
 		data.clear();
 	}
 
-	
+
 };
 
 #endif //DATABASE_RECORD_H
