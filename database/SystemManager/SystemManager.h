@@ -23,7 +23,6 @@ public:
     SystemManager(RecordManager *recordManager) : recordManager(recordManager) {}
 
     void run(Order order) {
-
         switch (order.subType) {
             case CreateDataBase:
                 createDataBase(order);
@@ -42,6 +41,7 @@ public:
                 break;
             case ShowDataBase:
                 showDB(order);
+                cout << "out" <<endl;
                 break;
             case ShowTable:
                 showTable(order);
@@ -55,13 +55,16 @@ public:
     void createDataBase(Order order) {
         string DBname = order.getDBName();
         string createOrder = "mkdir " + DBname;
-
+        string infoFile = DBname + "/" + ".info.txt";
         system(createOrder.c_str());
+        ofstream out(infoFile.c_str());
+        out.close();
     }
 
     void createTable(Order order) {
         string path = DBNow + "/" + order.getTableName();
         recordManager->createFile(path.c_str(), order.getField());
+        InfoManager::createTable(DBNow,order.getTableName());
     }
 
     void useDataBase(Order order) {
@@ -76,16 +79,18 @@ public:
     void dropTable(Order order) {
         string dropOrder = "rm -f " + DBNow + "/" + order.getTableName();
         system(dropOrder.c_str());
+        InfoManager::dropTable(DBNow,order.getTableName());
     }
 
     vector<string> showDB(Order order) {
         vector<string> tableList = InfoManager::getTables(order.getDBName());
         print << tableList << endl;
+        //cout <<"fnish0"<<endl;
     }
 
     void showTable(Order order) {
         Field field = InfoManager::getField(DBNow, order.getTableName());
-        print << field <<endl;
+        print << field.toStr() <<endl;
     }
 };
 

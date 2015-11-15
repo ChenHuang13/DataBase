@@ -9,18 +9,21 @@
 
 #include <utility>
 #include <vector>
-#include <string>
+#include <cstring>
 #include "../define.h"
 
 class Field {
 public:
+    std::string line;
     std::vector<std::pair<std::string, DataType> > list;
     //name & type's pair
     std::vector<int> nums;
     std::vector<RemarkType> remarks;
 
-    Field() {
+    Field() {}
 
+    Field(std::string line):line(line) {
+        fromStr(line);
     }
 
     int size() const {
@@ -41,6 +44,16 @@ public:
 
     RemarkType getRemark(const int fieldID) const {
         return remarks[fieldID];
+    }
+
+    void fromStr(std::string str){
+        //TODO
+    }
+
+    std::string toStr(){
+        //TODO
+        line = "id int(32)";
+        return line;
     }
 };
 

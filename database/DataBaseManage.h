@@ -30,8 +30,8 @@ public:
     void globalInit() {
         recordManager = new RecordManager();
         systemManager = new SystemManager(recordManager);
-        queryManager = new QueryManager(recordManager);
-        indexManager = new IndexManager(recordManager);
+        queryManager  = new QueryManager(recordManager);
+        indexManager  = new IndexManager(recordManager);
     }
 
     //运行管理
@@ -39,8 +39,9 @@ public:
         string line;
         Order order;
         while (cin >> line) {
+
             order.getString(line);
-            if (order.type != UNFINISH) debug << order << endl;
+            if (order.type != UNFINISH) debug << ">>>" << order << endl;
 
             if (order.type != UNFINISH) {
                 switch (order.type) {

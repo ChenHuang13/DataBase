@@ -23,9 +23,9 @@ struct Print {
     Print operator <<(const Order o){ cout<<o.line; return *this;}
 
     Print operator <<(const vector<string> list) {
-        for (int i = 0 ; i  <  list.size() ; i++){
-            *this << list[i] << " ";
-        }
+//        for (int i = 0 ; i  <  list.size() ; i++){
+//            *this << list[i] << " ";
+//        }
         return *this;
     }
 

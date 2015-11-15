@@ -87,7 +87,7 @@ public:
                         break;
                     }
                 }
-                //cout <<tableName << " " <<fieldStr<<endl;
+
                 return;
             }
             return;
@@ -149,7 +149,7 @@ public:
     }
 
     string getTableName() {
-
+        return tableName;
     }
 
     Field getField() {
