@@ -11,7 +11,9 @@
 
 enum DataType{OBEJECT, INTEGER, FLOAT, STRING};
 enum PageType{RecordPage, TablePage, IndexPage};
-enum OrderType{DDL, DML, ERR};
+enum OrderType{DDL, DML, UNFINISH , FINISH , ERR};
+enum SubType{CreateDataBase, UseDataBase, CreateTable, DropDataBase, DropTable, ShowDataBase, ShowTable};
+enum RemarkType{NOTNULL, PRIMARYKEY, FOREIGNKEY};
 typedef int PageID,FileID;
 
 const int MAX_FIELD_LENGTH = 128;

@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Debug.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/IndexManager/IndexManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Order.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Print.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/QueryManager/QueryManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Data.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Field.h" isTestSource="false" />
@@ -15,6 +16,7 @@
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/RecordID.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/RecordManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Table.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/SystemManager/InfoManeger.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SystemManager/SystemManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/define.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />

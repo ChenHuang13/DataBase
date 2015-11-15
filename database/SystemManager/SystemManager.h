@@ -10,11 +10,82 @@
 #ifndef DATABASE_SYSTEMMANAGER_H
 #define DATABASE_SYSTEMMANAGER_H
 
+#include "../RecordManager/RecordManager.h"
+#include "../tools/FileStruct.h"
+#include "../Print.h"
 
-class SystemManager{
+#include "InfoManeger.h"
+
+class SystemManager {
 public:
-    void run(Order order){
+    string DBNow;
+    RecordManager *recordManager;
+    SystemManager(RecordManager *recordManager) : recordManager(recordManager) {}
 
+    void run(Order order) {
+
+        switch (order.subType) {
+            case CreateDataBase:
+                createDataBase(order);
+                break;
+            case CreateTable:
+                createTable(order);
+                break;
+            case UseDataBase:
+                useDataBase(order);
+                break;
+            case DropDataBase:
+                dropDB(order);
+                break;
+            case DropTable:
+                dropTable(order);
+                break;
+            case ShowDataBase:
+                showDB(order);
+                break;
+            case ShowTable:
+                showTable(order);
+                break;
+            default:
+                debug << "解析数据库操作命令出错！";
+                break;
+        }
+    }
+
+    void createDataBase(Order order) {
+        string DBname = order.getDBName();
+        string createOrder = "mkdir " + DBname;
+
+        system(createOrder.c_str());
+    }
+
+    void createTable(Order order) {
+        string path = DBNow + "/" + order.getTableName();
+        recordManager->createFile(path.c_str(), order.getField());
+    }
+
+    void useDataBase(Order order) {
+        DBNow = order.getDBName();
+    }
+
+    void dropDB(Order order) {
+        string dropOrder = "rm -rf " + order.getDBName();
+        system(dropOrder.c_str());
+    }
+
+    void dropTable(Order order) {
+        string dropOrder = "rm -f " + DBNow + "/" + order.getTableName();
+        system(dropOrder.c_str());
+    }
+
+    vector<string> showDB(Order order) {
+        vector<string> tableList = InfoManager::getTables(order.getDBName());
+        print << tableList << endl;
+    }
+
+    void showTable(Order order) {
+        Field field = InfoManager::getField(DBNow, order.getTableName());
+        print << field <<endl;
     }
 };
 

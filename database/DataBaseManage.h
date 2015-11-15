@@ -16,6 +16,7 @@
 #include "SystemManager/SystemManager.h"
 #include "IndexManager/IndexManager.h"
 
+
 using namespace std;
 
 class DataBaseManager {
@@ -23,31 +24,39 @@ public:
     SystemManager *systemManager;
     QueryManager *queryManager;
     IndexManager *indexManager;
+    RecordManager *recordManager;
 
     //全局初始化
     void globalInit() {
-        systemManager = new SystemManager();
-        queryManager  = new QueryManager();
-        indexManager  = new IndexManager();
+        recordManager = new RecordManager();
+        systemManager = new SystemManager(recordManager);
+        queryManager = new QueryManager(recordManager);
+        indexManager = new IndexManager(recordManager);
     }
 
     //运行管理
     void run() {
         string line;
-        while (cin >> line){
-            Order order(line);
-            debug << order << endl;
-            switch (order.type){
-                case DDL:
-                    systemManager->run(order);
-                    break;
-                case DML:
-                    queryManager->run(order);
-                    break;
-                case ERR:
-                default:
-                    debug << "解析命令出错！"<<endl;
-                    break;
+        Order order;
+        while (cin >> line) {
+            order.getString(line);
+            if (order.type != UNFINISH) debug << order << endl;
+
+            if (order.type != UNFINISH) {
+                switch (order.type) {
+                    case DDL:
+                        systemManager->run(order);
+                        break;
+                    case DML:
+                        queryManager->run(order);
+                        break;
+                    case UNFINISH:
+                        break;
+                    case ERR:
+                    default:
+                        debug << "解析命令出错！" << endl;
+                        break;
+                }
             }
         }
     }

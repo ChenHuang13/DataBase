@@ -4,37 +4,44 @@
 
 //Field类：储存每种表的字段信息，会被Record类和Table类当成成员变量。
 
+#ifndef DATABASE_FIELD_H
+#define DATABASE_FIELD_H
+
 #include <utility>
 #include <vector>
 #include <string>
 #include "../define.h"
 
-#ifndef DATABASE_FIELD_H
-#define DATABASE_FIELD_H
-
-class Field{
+class Field {
 public:
-	vector < pair < string , DataType > > list;//name & type's pair
-	vector < int > nums;
-	Field() {
+    std::vector<std::pair<std::string, DataType> > list;
+    //name & type's pair
+    std::vector<int> nums;
+    std::vector<RemarkType> remarks;
 
-	}
-	int size() {
-		return list.size();
-	}
+    Field() {
 
-	string getFieldName(int fieldID) {
-		return list[fieldID].first;
-	}
+    }
 
-	DataType getFieldType(int fieldID) {
-		return list[fieldID].second;
-	}
+    int size() const {
+        return list.size();
+    }
 
-	int getFieldSize(int fieldID) {
-		return nums[fieldID];
-	}
+    std::string getFieldName(const int fieldID) const {
+        return list[fieldID].first;
+    }
 
+    DataType getFieldType(const int fieldID) const {
+        return list[fieldID].second;
+    }
+
+    int getFieldSize(const int fieldID) const {
+        return nums[fieldID];
+    }
+
+    RemarkType getRemark(const int fieldID) const {
+        return remarks[fieldID];
+    }
 };
 
 #endif //DATABASE_FIELD_H
