@@ -10,7 +10,6 @@
       <sourceFolder url="file://$MODULE_DIR$/QueryManager/QueryManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Data.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Field.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/RecordManager/HeadInfo.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Query.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/Record.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/RecordManager/RecordID.h" isTestSource="false" />

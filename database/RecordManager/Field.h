@@ -16,6 +16,9 @@ class Field{
 public:
 	vector < pair < string , DataType > > list;//name & type's pair
 	vector < int > nums;
+	Field() {
+
+	}
 	int size() {
 		return list.size();
 	}
