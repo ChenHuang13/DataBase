@@ -41,7 +41,6 @@ public:
                 break;
             case ShowDataBase:
                 showDB(order);
-                cout << "out" <<endl;
                 break;
             case ShowTable:
                 showTable(order);
@@ -53,7 +52,12 @@ public:
     }
 
     void createDataBase(Order order) {
+
         string DBname = order.getDBName();
+        if (isDir(DBname)){
+            string dropOrder = "rm -rf " + DBname;
+            system(dropOrder.c_str());
+        }
         string createOrder = "mkdir " + DBname;
         string infoFile = DBname + "/" + ".info.txt";
         system(createOrder.c_str());
@@ -64,7 +68,7 @@ public:
     void createTable(Order order) {
         string path = DBNow + "/" + order.getTableName();
         recordManager->createFile(path.c_str(), order.getField());
-        InfoManager::createTable(DBNow,order.getTableName());
+        InfoManager::createTable(DBNow,order.getTableName() , order.getField());
     }
 
     void useDataBase(Order order) {
@@ -82,10 +86,10 @@ public:
         InfoManager::dropTable(DBNow,order.getTableName());
     }
 
-    vector<string> showDB(Order order) {
-        vector<string> tableList = InfoManager::getTables(order.getDBName());
+    void showDB(Order order) {
+        vector<string> tableList;
+        InfoManager::getTables(order.getDBName() ,tableList);
         print << tableList << endl;
-        //cout <<"fnish0"<<endl;
     }
 
     void showTable(Order order) {

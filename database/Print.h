@@ -22,18 +22,18 @@ struct Print {
     Print operator <<(ostream& (*op)(ostream& ) ){ cout << endl;return *this;}
     Print operator <<(const Order o){ cout<<o.line; return *this;}
 
-    Print operator <<(const vector<string> list) {
-//        for (int i = 0 ; i  <  list.size() ; i++){
-//            *this << list[i] << " ";
-//        }
+    Print operator <<(const vector<string> &list) {
+        for (int i = 0 ; i  <  list.size() ; i++){
+            *this << list[i] << " ";
+        }
         return *this;
     }
 
     Print operator <<(const Field &field){
-        for(int i = 0 ; i < field.size() ; i++){
-            *this << field.getFieldName(i) << " " << field.getFieldType(i) << " " << field.getRemark(i) << ",";
-        }
-        cout << endl;
+//        for(int i = 0 ; i < field.size() ; i++){
+//            *this << field.getFieldName(i) << " " << field.getFieldType(i) << " " << field.getRemark(i) << ",";
+//        }
+        cout << field.toStr() << endl;
         return *this;
     }
 

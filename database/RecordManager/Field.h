@@ -47,12 +47,12 @@ public:
     }
 
     void fromStr(std::string str){
+        line = str;
         //TODO
     }
 
-    std::string toStr(){
+    std::string toStr() const{
         //TODO
-        line = "id int(32)";
         return line;
     }
 };

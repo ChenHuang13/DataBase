@@ -10,24 +10,39 @@
 class InfoManager {
 public:
     static Field getField(string DBName, string tableName) {
-        return Field("id int(32)");
+        Field field;
+        string path = DBName + "/" + ".info.txt";
+        ifstream in(path.c_str());
+        if(!in){
+            cout << "打开文件失败！"<<endl;
+            return field;
+        }
+        string line;
+        while (getline(in,line)) {
+            if (line == tableName){
+                getline(in,line);
+                field.fromStr(line);
+                in.close();
+                return field;
+            }
+            getline(in,line);
+        }
     }
 
-    static vector<string> getTables(string DB) {
-        vector<string> Tablelist;
+    static void getTables(string DB , vector<string>& Tablelist) {
         string path = DB + "/" + ".info.txt";
         ifstream in(path.c_str());
         if(!in){
             cout << "打开文件失败！"<<endl;
-            return Tablelist;
+            return ;
         }
         string line;
-        while (in >> line) {
-            //cout << line << " miao" << endl;
+        while (getline(in,line)) {
             Tablelist.push_back(line);
+            getline(in,line);
         }
         in.close();
-        return Tablelist;
+
     }
 
     static void dropTable(string DB, string table) {
@@ -39,8 +54,9 @@ public:
             cout << "打开文件失败！"<<endl;
             return;
         }
-        while (in >> line) {
+        while (getline(in,line)) {
             if (line == table) {
+                getline(in,line);
                 continue;
             }
             Tablelist.push_back(line);
@@ -59,7 +75,7 @@ public:
         out.close();
     }
 
-    static void createTable(string DB, string table) {
+    static void createTable(string DB, string table , Field field) {
         string path = DB + "/" + ".info.txt";
         ofstream out(path.c_str(), ios::app);
         if (!out) //检查文件是否正常打开
@@ -67,7 +83,7 @@ public:
             cout << "打开文件" << path << "出错" << endl;
         }
         else {
-            out << table << endl;
+            out << table << endl << field.toStr() << endl;
         }
         out.close();
     }

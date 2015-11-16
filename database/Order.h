@@ -23,7 +23,7 @@ public:
     SubType subType;
     std::string line;
     std::string tableName;
-    Field feild;
+    Field field;
 
     void getString(std::string subline) {
         if (subline == "") {
@@ -83,11 +83,10 @@ public:
                                 fieldStr = line.substr(i + 1, j - i - 1);
                                 break;
                             }
-
                         break;
                     }
                 }
-
+                field.fromStr(fieldStr);
                 return;
             }
             return;
@@ -153,7 +152,7 @@ public:
     }
 
     Field getField() {
-        return Field();
+        return field;
     }
 
 

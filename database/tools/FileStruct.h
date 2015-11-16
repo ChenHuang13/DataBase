@@ -20,6 +20,16 @@
 
 using namespace std;
 
+//判断文件夹是否存在
+
+bool isDir(string dir) {
+    struct stat fileStat;
+    if ((stat(dir.c_str(), &fileStat) == 0) && S_ISDIR(fileStat.st_mode)) {
+        return true;
+    }
+    return false;
+}
+
 string numToStr(int numn) {
     stringstream ss;
     ss << numn;
