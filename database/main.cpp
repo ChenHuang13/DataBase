@@ -9,6 +9,7 @@ using namespace std;
 
 int main() {
     freopen("in.txt","r",stdin);
+    freopen("out.txt","w",stdout);
     DataBaseManager* dataBaseManager = new DataBaseManager();
     dataBaseManager->globalInit();
     dataBaseManager->run();
