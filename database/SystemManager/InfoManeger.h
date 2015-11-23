@@ -1,7 +1,7 @@
 //
 // Created by huangsy13 on 11/15/15.
 //
-
+//管理表的信息
 #ifndef DATABASE_INFOMANEGER_H
 #define DATABASE_INFOMANEGER_H
 
