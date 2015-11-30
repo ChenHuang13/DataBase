@@ -5,7 +5,9 @@
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/DataBaseManage.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Debug.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/IndexManager/IndexHandle.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/IndexManager/IndexManager.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/IndexManager/IndexScan.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Order.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Print.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/QueryManager/QueryManager.h" isTestSource="false" />

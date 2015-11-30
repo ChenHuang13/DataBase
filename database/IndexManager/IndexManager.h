@@ -11,6 +11,18 @@ class IndexManager{
 public:
     RecordManager* recordManager;
     IndexManager(RecordManager* recordManager):recordManager(recordManager){}
+
+    void createIndex(){}
+
+    void destroyIndex(){
+
+    }
+
+    void openIndex(){}
+
+    void closeIndex(){}
 };
+
+
 
 #endif //DATABASE_INDEXMANAGER_H
