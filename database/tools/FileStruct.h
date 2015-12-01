@@ -20,7 +20,10 @@
 
 using namespace std;
 
-//判断文件夹是否存在
+//工具箱：
+//1.int转string
+//2.判断文件夹是否存在
+//3.列出文件列表和文件计数
 
 bool isDir(string dir) {
     struct stat fileStat;
