@@ -169,6 +169,6 @@ class DMLOrder {
             }
         }
     }
-}
+};
 
 #endif //DATABASE_ORDER_H
