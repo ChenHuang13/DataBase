@@ -9,8 +9,6 @@
 
 #include "../RecordManager/RecordManager.h"
 
-
-
 class IndexManager{
 private:
     BufPageManager *bpm;
