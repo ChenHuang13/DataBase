@@ -97,7 +97,7 @@ public:
             delete cdbs;
         }
         multiset<char*, Cmp>::iterator it;
-        int fd = open("sys.b", O_RDWR);
+        int fd = open("DataBaseInfo.db", O_RDWR);
         int k = dbs.size();
         write(fd, &k, sizeof(int));
         for (it = dbs.begin(); it != dbs.end(); it++) {
@@ -112,9 +112,10 @@ public:
         exit(0);
     }
 
+    //从DataBaseInfo.db加载当前数据库信息
     void loadDataBase() {
         dbs.clear();
-        int fd = open("sys.b", O_RDWR);
+        int fd = open("DataBaseInfo.db", O_RDWR);
         int n;
         read(fd, &n, sizeof(int));
         for (int i = 0; i < n; ++ i) {
@@ -127,9 +128,10 @@ public:
         close(fd);
     }
 
+    //清空数据库信息
     void clearDataBase() {
-        fm->createFile("sys.b");
-        int fd = open("sys.b", O_RDWR);
+        fm->createFile("DataBaseInfo.db");
+        int fd = open("DataBaseInfo.db", O_RDWR);
         int n = 0;
         write(fd, &n, sizeof(int));
         close(fd);
@@ -167,24 +169,6 @@ public:
             memset(a + len, 0xff, 8);
         }
     }
-    
-
-    bool usedb(char* name) {
-        multiset<char*, Cmp>::iterator it = dbs.find(name);
-        if (it == dbs.end()) {
-            return false;
-        }
-        if (cdbs != NULL){
-            if (strcmp(cdbs->dname, name) == 0) return false;
-            systemManager.closedb();
-        }
-        cdbs = new DB(
-                name, fm, bpm, bpl
-        );
-        return true;
-    }
-
-
 
     void execute(char* sql) {
         int len = strlen(sql);

@@ -81,6 +81,8 @@ public:
         cdbs = NULL;
         return true;
     }
+
+
 };
 
 #endif //DATABASE_SYSTEMMANAGER_H
