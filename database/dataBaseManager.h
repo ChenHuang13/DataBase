@@ -17,12 +17,15 @@
 #include "parser/parser.h"
 #include <limits.h>
 
-#include "exec_select.h"
-#include "exec_insert.h"
-#include "exec_delete.h"
-#include "exec_update.h"
+#include "select.h"
+#include "insert.h"
+#include "delete.h"
+#include "update.h"
 #include "define.h"
 #include "tool.h"
+
+
+
 
 void getl(void* x, bool e, uchar* a) {
     memcpy(a, x, 8);
@@ -401,7 +404,9 @@ void execute(char* sql) {
 
 
 void fileInput(string fileName) {
-    fin = fopen(("../sql/"+fileName).c_str(), "r");
+    fin = fopen( ("../sql/"+fileName).c_str() , "r" );
+        
+
     char* str = fgets(buf, 1000, fin);
     state = START;
     while (str != NULL) {
@@ -422,14 +427,14 @@ void test(){
     clearAll();
     load();
     cout << "开始测试！"<<endl;
-    fileInput("test.lql");
-    fileInput("book.lql");
-    fileInput("orders.lql");
-    fileInput("select.lql");
-    fileInput("join.lql");
-    fileInput("delete.lql");
-    fileInput("join.lql");
-    fileInput("update.lql");
+    fileInput("test.sql");
+    fileInput("book.sql");
+    fileInput("orders.sql");
+    fileInput("select.sql");
+    fileInput("join.sql");
+    fileInput("delete.sql");
+    fileInput("join.sql");
+    fileInput("update.sql");
     cout << "测试完成！"<< endl;
     closeDataBase();
 }

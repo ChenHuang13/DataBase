@@ -14,6 +14,14 @@
 #define EOCTB 3
 #include <iostream>
 using namespace std;
+
+
+class Paser{
+public:
+
+};
+
+
 char* getWord(char*& s, char e) {
 	while (*s == ' ') ++ s;
 	if (*s == '\0') {
