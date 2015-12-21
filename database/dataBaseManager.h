@@ -149,7 +149,9 @@ bool usedb(char* name) {
     );
     return true;
 }
-void shutdown() {
+
+
+void closeDataBase() {
     if (cdbs != NULL) {
         cdbs->closeDB();
         delete cdbs;
@@ -166,7 +168,7 @@ void shutdown() {
     }
     close(fd);
     dbs.clear();
-    cout << " shut down " << endl;
+    cout << "关闭数据库成功！" << endl;
     exit(0);
 }
 
@@ -396,6 +398,8 @@ void execute(char* sql) {
         default: break;
     }
 }
+
+
 void fileInput(string fileName) {
     fin = fopen(("../sql/"+fileName).c_str(), "r");
     char* str = fgets(buf, 1000, fin);
@@ -427,7 +431,7 @@ void test(){
     fileInput("join.lql");
     fileInput("update.lql");
     cout << "测试完成！"<< endl;
-    shutdown();
+    closeDataBase();
 }
 
 #endif //DATABASE_DATABASEMANAGER_H

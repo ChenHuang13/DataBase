@@ -66,7 +66,7 @@ protected:
 		if (start == 0) {
 			return getLeafData(index);
 		} else {
-			//cout << start - bitNum + index << endl;
+			//cout << start - bitNum + indexManager << endl;
 			return inner[start - bitNum + index];
 		}
 	}
@@ -132,7 +132,7 @@ protected:
 		}
 		/*
 		if (level == 1) {
-			cout << "level1:" << start[index] << " " << c << endl;
+			cout << "level1:" << start[indexManager] << " " << c << endl;
 		}*/
 		updateInner(level + 1, offset + levelCap, pos, (levelCap >> BIAS), c);
 	}
@@ -140,7 +140,7 @@ protected:
 		uint lb = lowbit(inner[offset + pos]);
 		int index = h[_hash(lb)];
 		/*if (level == 0) {
-			cout << "level0:" << index << " " << pos << endl;
+			cout << "level0:" << indexManager << " " << pos << endl;
 		}*/
 		int nPos = (pos << BIAS) + index;
 		if (level == 0) {
