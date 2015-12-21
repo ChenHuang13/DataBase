@@ -8,8 +8,8 @@
 #ifndef NODEMANAGER_H_
 #define NODEMANAGER_H_
 #include "../utils/MyLinkList.h"
-#include "../recordmanager/ItemList.h"
-#include "../recordmanager/layout.h"
+#include "../recordManager/ItemList.h"
+#include "../recordManager/layout.h"
 #include <string>
 using namespace std;
 struct Layout {

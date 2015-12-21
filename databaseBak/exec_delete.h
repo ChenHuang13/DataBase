@@ -8,7 +8,7 @@
 #ifndef EXEC_DELETE_H_
 #define EXEC_DELETE_H_
 
-#include "database.h"
+#include "define.h"
 #include "parse_where.h"
 void exec_delete(char* sql) {
 	char* prev, *next;

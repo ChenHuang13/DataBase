@@ -9,7 +9,7 @@
 #define PRINT_H_
 #include <cstdio>
 #include "utils/compare.h"
-#include "database.h"
+#include "dataBaseManager.h"
 void printCol(Table* tb, int i, uchar* it) {
 	if ((bm & (1 << i)) != 0) {
 		printf("null\t");

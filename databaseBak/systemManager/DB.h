@@ -110,7 +110,7 @@ struct DB {
 		fm->closeFile(fid);
 	}
 	void printtb() {
-		printf("%d\n", cmap.size());
+		printf("%d\n", int(cmap.size()));
 		map<char*, Table*, Cmp>::iterator it;
 		for (it = cmap.begin(); it != cmap.end(); ++ it) {
 			printf("%s ", it->second->tn);

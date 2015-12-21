@@ -8,7 +8,10 @@
 #ifndef EXEC_SELECT_H_
 #define EXEC_SELECT_H_
 
-#include "database.h"
+//#include "dataBaseManager.h"
+#include "define.h"
+#include "tool.h"
+
 #include "parse_where.h"
 #include "print.h"
 void exec_select(char* sql) {

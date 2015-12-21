@@ -11,7 +11,7 @@
 #include <iostream>
 #include "NodeManager.h"
 #include "../utils/pagedef.h"
-#include "../recordmanager/ItemList.h"
+#include "../recordManager/ItemList.h"
 #include "../utils/compare.h"
 #include <string.h>
 using namespace std;
@@ -282,12 +282,12 @@ public:
             if (index == -1) {
                 index = t->keyNum() - 1;
                 childItem = t->itemAt(index);
-            	//t->updateItem(item, index, 0, parser->keyLen());
+            	//t->updateItem(item, indexManager, 0, parser->keyLen());
                 memcpy(childItem, item, keyLen);
             } else {
             	childItem = t->itemAt(index);
             }
-            //int id = innerParser->getValue(t->itemAt(index));
+            //int id = innerParser->getValue(t->itemAt(indexManager));
             int id;
             memcpy(&id, childItem + keyLen, 4);
             ItemList* c = nodeManager->getList(tid, id, layout);

@@ -7,7 +7,8 @@
 
 #ifndef EXEC_INSERT_H_
 #define EXEC_INSERT_H_
-#include "database.h"
+
+#include "define.h"
 void exec_insert(char* sql) {
 	char* next = sql;
 	while (*next == ' ') ++ next;

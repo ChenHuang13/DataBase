@@ -8,7 +8,7 @@
 #ifndef ITEM_LIST_H_
 #define ITEM_LIST_H_
 #include "../utils/MyBitMap.h"
-#include "../recordmanager/layout.h"
+#include "../recordManager/layout.h"
 #include "../bufmanager/BufPageManager.h"
 #include <string.h>
 #include <cstdlib>
@@ -27,7 +27,7 @@ public:
 public:
 	void changeSlot(int index) {
 		int k = (index >> 5);
-		uint i = (1 << (/*index & 0x0000001f*/ index % 32));
+		uint i = (1 << (/*indexManager & 0x0000001f*/ index % 32));
 		bitMapArray[k] ^= i;
 	}
 	short getSlot() {
@@ -66,7 +66,7 @@ public:
 	uchar* itemAt(int index) {
 		if (layout->longItem) {
 			short p = biasArray[index];
-			//cout <<"slot "<< p << " " << index << endl;
+			//cout <<"slot "<< p << " " << indexManager << endl;
 //			checkSlot("find bias Array");
 			return itemArray + p * layout->itemLen;
 		} else {

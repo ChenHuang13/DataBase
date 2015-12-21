@@ -7,7 +7,8 @@
 
 #ifndef EXEC_UPDATE_H_
 #define EXEC_UPDATE_H_
-#include "database.h"
+
+#include "define.h"
 #include "parse_where.h"
 void exec_update(char* sql) {
 	if (cdbs == NULL) {

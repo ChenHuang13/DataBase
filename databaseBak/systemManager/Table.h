@@ -10,7 +10,7 @@
 #include <vector>
 #include "../utils/MyLinkList.h"
 #include "../utils/pagedef.h"
-#include "../bplustree/BPlusTree.h"
+#include "../indexManager/BPlusTree.h"
 #include "../utils/compare.h"
 #include <map>
 #include <stdio.h>
@@ -19,7 +19,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
+
 using namespace std;
+
 struct CB {
 	int dt;
 	int cl;
@@ -40,6 +42,7 @@ struct Cmp {
 		return (strcmp(a, b) < 0);
 	}
 };
+
 struct Create {
 	int n;
 	CB* c;

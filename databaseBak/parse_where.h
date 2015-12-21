@@ -7,7 +7,7 @@
 
 #ifndef PARSE_WHERE_H_
 #define PARSE_WHERE_H_
-#include "database.h"
+#include "dataBaseManager.h"
 void exec_where(char* sql) {
 	errwhere = 0;
 	tab1.clear();
