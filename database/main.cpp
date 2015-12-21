@@ -9,36 +9,14 @@
 using namespace std;
 
 int main() {
-
-    init();
-
-    fm = new FileManager();
-    bpm = new BufPageManager(fm);
-    bpl = new MyLinkList(CAP, MAX_TYPE_NUM);
-
-    char ans;
-    cout << "进行自动测试? y/n" << endl;
-    cin >> ans;
-    if (ans == 'y') {
-        test();
-    }
-    else {
-        cout<<"清空以前记录? y/n" << endl;
-        cin >> ans;
-        if (ans == 'y') {
-            clearAll();
-            load();
-        } else {
-            load();
-        }
-        string fileName;
-        while (true) {
-            cout << ">>";
-            cin >> fileName;
-            if (fileName == "exit") break;
-            else fileInput(fileName);
-        }
-        closeDataBase();
-    }
-    return 0;
+    //创建数据库管理类
+    DataBaseManager dataBaseManager;
+    //数据库初始化
+    dataBaseManager.init();
+    //数据库运行模式
+    dataBaseManager.seletModel();
+    //运行数据库
+    dataBaseManager.run();
+    //数据库退出
+    dataBaseManager.quit();
 }
