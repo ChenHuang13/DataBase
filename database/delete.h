@@ -9,7 +9,6 @@
 #define EXEC_DELETE_H_
 
 #include "define.h"
-#include "parse_where.h"
 #include "parser.h"
 void exec_delete(char* sql) {
 	char* prev, *next;
@@ -31,7 +30,7 @@ void exec_delete(char* sql) {
 	tabs.push_back(ctb);
 	prev = next + 1;
 	next = paser.getWord(prev, ' ');
-	exec_where(next + 1);
+	paser.exec_where(next + 1);
 	if (errwhere == 1) {
 		return;
 	}

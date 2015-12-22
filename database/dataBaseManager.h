@@ -6,6 +6,10 @@
 #define DATABASE_DATABASEMANAGER_H
 
 #define COL_NAME 0
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include <iostream>
 #include "utils/pagedef.h"
 #include "recordManager/ItemList.h"
@@ -25,9 +29,7 @@
 #include "define.h"
 #include "tool.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+
 
 class DataBaseManager{
 public:
@@ -69,14 +71,14 @@ public:
     void run(){
         if (toTest){
             cout << "开始测试！"<<endl;
-            fileInput("test.sql");
-            fileInput("book.sql");
-            fileInput("orders.sql");
-            fileInput("select.sql");
-            fileInput("join.sql");
-            fileInput("delete.sql");
-            fileInput("join.sql");
-            fileInput("update.sql");
+            paseFile("test.sql");
+            paseFile("book.sql");
+            paseFile("orders.sql");
+            paseFile("select.sql");
+            paseFile("join.sql");
+            paseFile("delete.sql");
+            paseFile("join.sql");
+            paseFile("update.sql");
             cout << "测试完成！"<< endl;
         }
         else{
@@ -85,7 +87,7 @@ public:
                 cout << "请输入需要载入的包含sql语句的文件名（退出输入exit）：";
                 cin >> fileName;
                 if (fileName == "exit") break;
-                else fileInput(fileName);
+                else paseFile(fileName);
             }
         }
     }
@@ -137,39 +139,7 @@ public:
         close(fd);
     }
 
-    void getl(void* x, bool e, uchar* a) {
-        memcpy(a, x, 8);
-        if (e) {
-            memset(a + 8, 0xff, 8);
-        } else {
-            memset(a + 8, 0x7f, 8);
-        }
-    }
-    void getr(void* x, bool e, uchar* a) {
-        memcpy(a, x, 8);
-        if (e) {
-            memset(a + 8, 0x7f, 8);
-        } else {
-            memset(a + 8, 0xff, 8);
-        }
-    }
-    void getsl(char* x, bool e, int len, uchar* a) {
-        strcpy((char*)a, x);
-        if (e) {
-            memset(a + len, 0xff, 8);
-        } else {
-            memset(a + len, 0x7f, 8);
-        }
-    }
-    void getsr(char* x, bool e, int len, uchar* a) {
-        strcpy((char*)a, x);
-        if (e) {
-            memset(a + len, 0x7f, 8);
-        } else {
-            memset(a + len, 0xff, 8);
-        }
-    }
-
+    //执行单条sql语句
     void execute(char* sql) {
         int len = strlen(sql);
         char* prev, *next;
@@ -276,7 +246,7 @@ public:
                 } else if (strcmp(prev, "USE") == 0) {
                     prev = next + 1;
                     next = paser.getWord(prev, ';');
-                    if (!usedb(prev)) {
+                    if (!systemManager.usedb(prev)) {
                         printf("error\n");
                         return;
                     }
@@ -397,30 +367,9 @@ public:
         }
     }
 
-    bool closedb() {
-        if (cdbs == NULL) return false;
-        cdbs->closeDB();
-        delete cdbs;
-        cdbs = NULL;
-        return true;
-    }
 
-    bool usedb(char* name) {
-        multiset<char*, Cmp>::iterator it = dbs.find(name);
-        if (it == dbs.end()) {
-            return false;
-        }
-        if (cdbs != NULL){
-            if (strcmp(cdbs->dname, name) == 0) return false;
-            closedb();
-        }
-        cdbs = new DB(
-                name, fm, bpm, bpl
-        );
-        return true;
-    }
-
-    void fileInput(string fileName) {
+    //读入包含sql语句的文件，解析成为sql语句
+    void paseFile(string fileName){
         fin = fopen( ("../sql/" + fileName).c_str() , "r" );
         char *str = fgets(buf, 1000, fin);
         state = START;

@@ -12,7 +12,6 @@
 #include "define.h"
 #include "tool.h"
 
-#include "parse_where.h"
 #include "print.h"
 #include "parser.h"
 
@@ -88,9 +87,9 @@ void exec_select(char* sql) {
 		}
 	}
 	next = paser.getWord(prev, ' ');
-	exec_where(next + 1);
+	paser.exec_where(next + 1);
 	if (errwhere == 1) return;
-	getCost();
+	paser.getCost();
 	ans1.clear();
 	cout << cidx<<endl;
 	ctb->select(cidx, ctb->range, ans1);

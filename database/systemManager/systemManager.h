@@ -74,8 +74,28 @@ public:
     }
 
 
+    bool closedb() {
+        if (cdbs == NULL) return false;
+        cdbs->closeDB();
+        delete cdbs;
+        cdbs = NULL;
+        return true;
+    }
 
-
+    bool usedb(char* name) {
+        multiset<char*, Cmp>::iterator it = dbs.find(name);
+        if (it == dbs.end()) {
+            return false;
+        }
+        if (cdbs != NULL){
+            if (strcmp(cdbs->dname, name) == 0) return false;
+            closedb();
+        }
+        cdbs = new DB(
+                name, fm, bpm, bpl
+        );
+        return true;
+    }
 
 };
 
