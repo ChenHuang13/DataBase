@@ -5,8 +5,8 @@
 #ifndef DATABASE_MYPRINT_H
 #define DATABASE_MYPRINT_H
 #include <cstdio>
-#include "utils/compare.h"
-#include "dataBaseManager.h"
+#include "../utils/compare.h"
+#include "../dataBaseManager.h"
 void printCol(TableInfo* tb, int i, uchar* it) {
     if ((bm & (1 << i)) != 0) {
         printf("null\t");
