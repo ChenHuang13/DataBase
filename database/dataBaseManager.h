@@ -29,8 +29,6 @@
 #include "define.h"
 #include "tool.h"
 
-
-
 class DataBaseManager{
 public:
 

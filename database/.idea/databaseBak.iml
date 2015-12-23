@@ -3,7 +3,10 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/indexManager/indexManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/queryManager/queryManager.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/recordManager/recordManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/systemManager/DB.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/systemManager/Table.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/systemManager/systemManager.h" isTestSource="false" />
