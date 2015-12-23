@@ -7,11 +7,12 @@
       <sourceFolder url="file://$MODULE_DIR$/indexManager/nodeManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/indexManager/tree.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/myPrint.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/queryManager/queryManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/recordManager/recordManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/systemManager/databaseInfo.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/systemManager/tableInfo.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/systemManager/systemManager.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/systemManager/tableInfo.h" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -12,7 +12,7 @@
 #include "../define.h"
 #include "../tool.h"
 
-#include "../print.h"
+#include "../myPrint.h"
 #include "../parser.h"
 
 void exec_select(char* sql) {
