@@ -4,6 +4,9 @@
 
 #ifndef DATABASE_TREE_H
 #define DATABASE_TREE_H
+
+//这是在内存里面维护一个树结构
+
 #include <iostream>
 #include "nodeManager.h"
 #include "../utils/pagedef.h"
@@ -11,8 +14,8 @@
 #include "../utils/compare.h"
 #include <string.h>
 using namespace std;
+
 struct Tree {
-public:
     NodeManager* nodeManager;
     Layout layout;
     int keyLen;
@@ -23,6 +26,7 @@ public:
     cf* cmp;
     int cp, cs;
     int tid;
+
     bool findItemIndex(ItemList* list, int& index) {
         if (list->keyNum() == 0) {
             index = -1;
@@ -69,19 +73,14 @@ public:
         index = r;
         return false;
     }
+
     void enlarge(int childIndex, uchar* childItem, ItemList* child, ItemList* parent) {
         child->markAccess();
-        //parent->markAccess();
         int low = (child->maxKeyNum() + 1) >> 1;
         if (parent == NULL) {
-            /*
-             * child is root
-             */
             if (!child->isLeaf() && child->keyNum() == 1) {
-                //int newRootID = innerParser->getValue(child->itemAt(0));
                 int newRootID;
                 memcpy(&newRootID, child->itemAt(0) + keyLen, 4);
-                //nodeManager->setRoot(newRootID);
                 rootID = newRootID;
                 nodeManager->release(child);
             }
@@ -103,11 +102,8 @@ public:
             int bid;
             memcpy(&bid, brotherItem + keyLen, 4);
             brother = nodeManager->getList(tid, bid, child->layout);
-            //bpl->insert(typeID, brother->bufIndex);
             if (brother->keyNum() == low) {
-                /*
-                 * merge
-                 */
+               //合并
                 if (isLeft) {
                     brother->mergeFromRight(child);
                     brother->header->size += child->header->size;
@@ -159,6 +155,7 @@ public:
             parent->markDirty();
         }
     }
+
     void split(int childIndex, ItemList* child, ItemList* parent, uchar* ci) {
         int M = child->capacity();
         if (child->keyNum() > M) {
@@ -210,6 +207,7 @@ public:
             delete t;
         }
     }
+
     bool find(ItemList* t) {
         t->markAccess();
         if (t->isLeaf()) {
@@ -250,6 +248,9 @@ public:
             return ret;
         }
     }
+
+
+    //插入数据
     bool insert(ItemList* t, uchar* item) {
         t->header->size ++;
         t->markDirty();
@@ -276,7 +277,6 @@ public:
             } else {
                 childItem = t->itemAt(index);
             }
-            //int id = innerParser->getValue(t->itemAt(indexManager));
             int id;
             memcpy(&id, childItem + keyLen, 4);
             ItemList* c = nodeManager->getList(tid, id, layout);
@@ -287,6 +287,7 @@ public:
             return ret;
         }
     }
+
     int rangeCount(bool flag, ItemList* t, uchar* a, uchar* b) {
         t->markAccess();
         int ia, ib;
@@ -328,13 +329,8 @@ public:
             return s;
         }
     }
-public:
-    Tree (
-            int typeID,
-            NodeManager* nm,
-            int kl, int il, cf* c,
-            int root, int s
-    ) {
+
+    Tree (int typeID,   NodeManager* nm,  int kl, int il, cf* c,  int root, int s ) {
         tid = typeID;
         nodeManager = nm;
         keyLen = kl;
@@ -352,18 +348,19 @@ public:
         sp = s;
         cs = cp = 0;
     }
+
     void findValue(uchar* key, int& p, int& s) {
         tmp = sp;
         cp = 0;
         cs = 0;
         ItemList* root = nodeManager->getList(tid, rootID, layout);
-        //bpl->insert(typeID, )
         cur = key;
         find(root);
         free(root);
         p = cp;
         s = cs;
     }
+
     bool insertValue(uchar* item) {
         tmp = sp;
         cur = item;
@@ -373,6 +370,7 @@ public:
         delete root;
         return ret;
     }
+
     bool eraseValue(uchar* key) {
         tmp = sp;
         cur = key;
@@ -386,6 +384,7 @@ public:
         delete root;
         return ret;
     }
+
     ItemList* findLeft() {
         tmp = sp;
         ItemList* t = nodeManager->getList(tid, rootID, layout);
@@ -397,6 +396,7 @@ public:
         }
         return t;
     }
+
     int count(uchar* a, uchar* b) {
         tmp = sp;
         ItemList* root = nodeManager->getList(tid, rootID, layout);
@@ -404,12 +404,14 @@ public:
         free(root);
         return k;
     }
+
     int size() {
         ItemList* root = nodeManager->getList(tid, rootID, layout);
         int k = root->header->size;
         free(root);
         return k;
     }
+
     void judge(int id) {
         ItemList* root = nodeManager->getList(tid, id, layout);
         if (root->isLeaf()) {
@@ -435,6 +437,7 @@ public:
         }
         free(root);
     }
+
     ~Tree() {
         delete layout.innerLayout;
         delete layout.leafLayout;
