@@ -11,7 +11,7 @@
 #include "../utils/compare.h"
 #include <string.h>
 using namespace std;
-struct BPlusTree {
+struct Tree {
 public:
     NodeManager* nodeManager;
     Layout layout;
@@ -329,7 +329,7 @@ public:
         }
     }
 public:
-    BPlusTree (
+    Tree (
             int typeID,
             NodeManager* nm,
             int kl, int il, cf* c,
@@ -435,9 +435,9 @@ public:
         }
         free(root);
     }
-    ~BPlusTree() {
+    ~Tree() {
         delete layout.innerLayout;
         delete layout.leafLayout;
     }
 };
-#endif //DATABASE_TREE_H
+#endif
