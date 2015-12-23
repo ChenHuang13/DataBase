@@ -30,6 +30,9 @@ struct CB {
     int ut;
     int nt;
 };
+
+
+//一个列项
 struct Col {
     CB cb;
     char* name;
@@ -38,6 +41,8 @@ struct Col {
     int tid;
     BPlusTree* bpt[2];
 };
+
+
 struct Cmp {
     bool operator()(const char* a, const char* b) {
         return (strcmp(a, b) < 0);
@@ -51,18 +56,20 @@ struct Create {
     int nl;
     char* tn;
 };
+
 struct Range {
     int rt;
     uchar* a;
     uchar* b;
 };
+
 struct Table {
     char* tn;
     int nl;
     Col col[MAX_COL_NUM];
     Range range[MAX_TB_NUM];
     Range rangeCopy[MAX_TB_NUM];
-    int cn;
+    int cn; //列的数量
     map<char*, int, Cmp> cmap;
     NodeManager* nm;
     int fid;
@@ -71,17 +78,15 @@ struct Table {
     ListLayout* lo;
     int dh;
     int dt;
-    Table(
-            int dbid,
-            NodeManager* nmg,
-            bool create, void* p
-    ) {
+
+
+
+    Table(int dbid, NodeManager* nmg, bool create, void* p ) {
         fid = dbid;
         nm = nmg;
         if (create) {
             Create* q = (Create*) p;
             tn = q->tn;
-            //strcpy(tn, q->tn);
             nl = q->nl;
             createt(q->n, q->c, q->name);
         } else {
@@ -90,12 +95,15 @@ struct Table {
             openIndex();
         }
     }
+
     uchar* getItem(int p, int s) {
         ItemList* d = nm->getList(dt, p, lo);
         uchar* it = d->itemAt(s);
         free(d);
         return it;
     }
+
+    //加载该表
     void load(int fd) {
         read(fd, &nl, sizeof(int));
         tn = new char[nl];
@@ -121,6 +129,8 @@ struct Table {
         ib = new uchar[len];
         lo = new ListLayout(len);
     }
+
+    //保存该表
     void save(int fd) {
         write(fd, &nl, sizeof(int));
         cout << nl << endl;
@@ -138,15 +148,19 @@ struct Table {
             write(fd, cl.root, 8);
         }
     }
+
     int keyLen(CB& a) {
         if (a.ut == UNI) {
             return a.cl;
         }
         return a.cl + 8;
     }
+
     cf* cmp(CB& a) {
         return kcmp[a.dt][a.ut];
     }
+
+    //生成b树
     void getTrees(Col& a) {
         a.tid = nm->nt();
         a.bpt[0] = new BPlusTree (
@@ -157,6 +171,8 @@ struct Table {
                 a.tid, nm, 8, 8, &keyu<ll>, a.root[1], 0
         );
     }
+
+    //打开索引
     void openIndex() {
         for (int i = 0; i < cn; ++ i) {
             Col& a = col[i];
@@ -165,6 +181,8 @@ struct Table {
             getTrees(a);
         }
     }
+
+
     void createt(int n, CB* c, char** name) {
         len = 4;
         cn = n;
@@ -189,6 +207,8 @@ struct Table {
         dh = d->id;
         free(d);
     }
+
+
     bool insertbpt(uchar* it, int k, int p, int s) {
         int bm;
         memcpy(&bm, it, 4);
@@ -204,6 +224,7 @@ struct Table {
             return col[k].bpt[0]->insertValue(ib);
         }
     }
+
     void erasebpt(uchar* it, int k, int p, int s) {
         int bm;
         memcpy(&bm, it, 4);
@@ -219,6 +240,8 @@ struct Table {
             col[k].bpt[0]->eraseValue(ib);
         }
     }
+
+
     bool createIndex(char* name) {
         map<char*, int>::iterator it = cmap.find(name);
         if (it == cmap.end()) {
@@ -247,6 +270,7 @@ struct Table {
         //	cout <<" ok"<<endl;
         return true;
     }
+
     bool insert(uchar* item, int& p, int& s) {
         ItemList* d = nm->getList(dt, dh, lo);
         if (d->keyNum() >= d->capacity()) {
@@ -276,6 +300,7 @@ struct Table {
         }
         return ret;
     }
+
     void erase(int p, int s) {
         ItemList* d = nm->getList(dt, p, lo);
         uchar* kk = d->itemAt(s);
@@ -288,6 +313,7 @@ struct Table {
         kk[3] ^= (1 << 7);
         free(d);
     }
+
     void reinsert(int p, int s) {
         ItemList* d = nm->getList(dt, p, lo);
         uchar* kk = d->itemAt(s);
@@ -299,6 +325,7 @@ struct Table {
         }
         free(d);
     }
+
     bool inRange(Range* r, uchar* item) {
         int bm;
         memcpy(&bm, item, 4);
@@ -319,6 +346,7 @@ struct Table {
         }
         return true;
     }
+
     void selectAll(int k, int isNull, Range* r, vector<pair<int, int> >& res) {
         memset(ib, 0, len);
         BPlusTree* bpt = col[k].bpt[isNull];
@@ -347,6 +375,7 @@ struct Table {
             l = nm->getList(col[k].tid, n, bpt->layout.leafLayout);
         }
     }
+
     void selectRange(int k, Range* r, vector<pair<int, int> >& res) {
         memset(ib, 0, len);
         BPlusTree* bpt = col[k].bpt[0];
@@ -383,6 +412,7 @@ struct Table {
             }
         }
     }
+
     int rangeCount(int k) {
         Col& c = col[k];
         Range& r = range[k];
@@ -397,6 +427,7 @@ struct Table {
         }
         return c.bpt[0]->count(r.a, r.b);
     }
+
     void select(int k, Range* r, vector<pair<int, int> >& res) {
         if (r[k].rt == ALL) {
             tt = 2;
@@ -411,6 +442,7 @@ struct Table {
             selectAll(k, 1, r, res);
         }
     }
+
     bool dropIndex(char* name) {
         map<char*, int>::iterator it = cmap.find(name);
         if (it == cmap.end()) {
@@ -430,6 +462,8 @@ struct Table {
         col[k].root[0] = col[k].root[1] = -1;
         return true;
     }
+
+
     void closeTB(bool reserve) {
         for (int i = 0; i < cn; ++ i) {
             if (col[i].bpt[0] != NULL) {
@@ -438,11 +472,13 @@ struct Table {
         }
         nm->ct(dt, reserve);
     }
+
     void rangeAll() {
         for (int i = 0; i < cn; ++ i) {
             range[i].rt = ALL;
         }
     }
+
     void copyRange(bool* c) {
         for (int i = 0; i < cn; ++ i) {
             if (!c[i]) continue;
@@ -451,6 +487,7 @@ struct Table {
             memcpy(rangeCopy[i].b, range[i].b, col[i].cb.cl + 8);
         }
     }
+
     void backRange(bool* c) {
         for (int i = 0; i < cn; ++ i) {
             if (!c[i]) continue;
@@ -459,6 +496,7 @@ struct Table {
             memcpy(range[i].b, rangeCopy[i].b, col[i].cb.cl + 8);
         }
     }
+
     void merge(int k, const Range& r2) {
         Range& r1 = range[k];
         int len = col[k].cb.cl + 8;
@@ -481,6 +519,7 @@ struct Table {
         if (cmp(r1.a, r2.a) < 0) memcpy(r1.a, r2.a, len);
         if (cmp(r1.b, r2.b) > 0) memcpy(r1.b, r2.b, len);
     }
+
     int getcolid(char* n) {
         map<char*,int,Cmp>::iterator it = cmap.find(n);
         if (it == cmap.end()) {
@@ -488,6 +527,7 @@ struct Table {
         }
         return it->second;
     }
+
     ~Table() {
         cmap.clear();
         for (int i = 0; i < cn; ++ i) {
