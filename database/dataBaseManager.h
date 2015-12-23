@@ -15,7 +15,7 @@
 #include "recordManager/ItemList.h"
 #include "recordManager/layout.h"
 #include "utils/MyBitMap.h"
-#include "systemManager/DB.h"
+#include "systemManager/databaseInfo.h"
 #include "systemManager/systemManager.h"
 #include <cstring>
 #include <set>
@@ -160,7 +160,7 @@ public:
                     }
                     prev = next + 1;
                     next = paser.getWord(prev, ';');
-                    Table* tb = cdbs->getTable(prev);
+                    TableInfo* tb = cdbs->getTable(prev);
                     if (tb == NULL) {
                         printf("error: no table\n");
                         return;
@@ -214,7 +214,7 @@ public:
                         }
                         prev = next + 1;
                         next = paser.getWord(prev, '(');
-                        Table* tb = cdbs->getTable(prev);
+                        TableInfo* tb = cdbs->getTable(prev);
                         if (tb == NULL) {
                             printf("error:no table\n");
                             return;
@@ -264,7 +264,7 @@ public:
                         }
                         prev = next + 1;
                         next = paser.getWord(prev, '(');
-                        Table* tb = cdbs->getTable(prev);
+                        TableInfo* tb = cdbs->getTable(prev);
                         if (tb == NULL) {
                             printf("error: no table\n");
                             return;
@@ -351,7 +351,7 @@ public:
                     return;
                 }
                 if (cdbs->createTB(&create)) {
-                    Table* tb = cdbs->getTable(create.tn);
+                    TableInfo* tb = cdbs->getTable(create.tn);
                     if (primary == -1) primary = 0;
                     tb->createIndex(create.name[primary]);
                 } else {

@@ -10,7 +10,7 @@
 #include <cstdio>
 #include "utils/compare.h"
 #include "dataBaseManager.h"
-void printCol(Table* tb, int i, uchar* it) {
+void printCol(TableInfo* tb, int i, uchar* it) {
 	if ((bm & (1 << i)) != 0) {
 		printf("null\t");
 	} else {
@@ -28,7 +28,7 @@ void printCols1(uchar* it) {
 	memcpy(&bm, it, 4);
 	for (int i = 0; i < n; ++ i) printCol(ctb, ctb->cmap[cname[i]], it);
 }
-void printItem(Table* tb, uchar* it) {
+void printItem(TableInfo* tb, uchar* it) {
     memcpy(&bm, it, 4);
     for (int i = 0; i < tb->cn; ++ i) printCol(ctb, i, it);
 }

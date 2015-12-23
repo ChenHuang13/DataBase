@@ -232,7 +232,7 @@ struct Paser{
         for (int i = 0; i < n; ++ i) {
             cost[i] = INT_MAX;
             idx[i] = -1;
-            Table* tb = tabs[i];
+            TableInfo* tb = tabs[i];
             for (int j = 0; j < tb->cn; ++ j) {
                 if (tb->col[j].bpt[0] != NULL) {
                     int k = tb->rangeCount(j);

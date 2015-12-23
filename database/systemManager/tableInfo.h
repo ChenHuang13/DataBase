@@ -2,8 +2,8 @@
 // Created by huangsy13 on 12/23/15.
 //
 
-#ifndef DATABASE_TABLE_H
-#define DATABASE_TABLE_H
+#ifndef DATABASE_TABLEINFO_H
+#define DATABASE_TABLEINFO_H
 
 //这里是不同表的操作底层接口
 
@@ -11,7 +11,7 @@
 #include <vector>
 #include "../utils/MyLinkList.h"
 #include "../utils/pagedef.h"
-#include "../indexManager/BPlusTree.h"
+#include "../indexManager/tree.h"
 #include "../utils/compare.h"
 #include <map>
 #include <stdio.h>
@@ -63,7 +63,7 @@ struct Range {
     uchar* b;
 };
 
-struct Table {
+struct TableInfo {
     char* tn;
     int nl;
     Col col[MAX_COL_NUM];
@@ -81,7 +81,7 @@ struct Table {
 
 
 
-    Table(int dbid, NodeManager* nmg, bool create, void* p ) {
+    TableInfo(int dbid, NodeManager* nmg, bool create, void* p ) {
         fid = dbid;
         nm = nmg;
         if (create) {
@@ -528,7 +528,7 @@ struct Table {
         return it->second;
     }
 
-    ~Table() {
+    ~TableInfo() {
         cmap.clear();
         for (int i = 0; i < cn; ++ i) {
             delete[] col[i].name;

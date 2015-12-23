@@ -10,7 +10,7 @@
 #include "../recordManager/ItemList.h"
 #include "../recordManager/layout.h"
 #include "../utils/MyBitMap.h"
-#include "../systemManager/DB.h"
+#include "databaseInfo.h"
 #include <cstring>
 #include <set>
 #include <limits.h>
@@ -97,7 +97,7 @@ public:
             if (strcmp(cdbs->dname, name) == 0) return false;
             closedb();
         }
-        cdbs = new DB(
+        cdbs = new DatabaseInfo(
                 name, fm, bpm, bpl
         );
         return true;
