@@ -15,10 +15,10 @@
 #include <set>
 #include <limits.h>
 
-#include "../select.h"
-#include "../insert.h"
-#include "../delete.h"
-#include "../update.h"
+#include "../queryManager/select.h"
+#include "../queryManager/insert.h"
+#include "../queryManager/delete.h"
+#include "../queryManager/update.h"
 #include "../define.h"
 #include "../tool.h"
 
@@ -26,8 +26,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+//系统管理模块，用于创建数据库，删除数据库，使用数据库和关闭数据库
+
 class SystemManager{
 public:
+    //创建一个数据库
     bool createdb(char* name) {
         multiset<char*, Cmp>::iterator it = dbs.find(name);
         if (it != dbs.end()) {
@@ -50,6 +53,8 @@ public:
         delete[] fn;
         return true;
     }
+
+    //删除一个数据库
     bool dropdb(char* name) {
         multiset<char*, Cmp>::iterator it = dbs.find(name);
         if (it == dbs.end()) {
@@ -73,7 +78,7 @@ public:
         return true;
     }
 
-
+    //关闭一个数据库
     bool closedb() {
         if (cdbs == NULL) return false;
         cdbs->closeDB();
@@ -82,6 +87,7 @@ public:
         return true;
     }
 
+    //使用一个数据库
     bool usedb(char* name) {
         multiset<char*, Cmp>::iterator it = dbs.find(name);
         if (it == dbs.end()) {

@@ -43,10 +43,7 @@ struct ListLayout {
 		}
 	}
 	void initLongItem() {
-		/* x = itemCapacity + 1
-		 * upper(x * itemLen / 4) + upper(x * 2 / 4) + upper(x / 32)
-		 * + upper(sizeof(ListHeader) / 4) <= PAGE_INT_NUM
-		 */
+
 		longItem = true;
 		int x = PAGE_SIZE / itemLen;
 		while (true) {

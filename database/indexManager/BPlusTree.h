@@ -130,10 +130,6 @@ public:
     				child->markDirty();
     			}
     		} else {
-    			/*
-    			 * move
-    			 */
-        	//	int start = child->isLeaf() ? keyStart : 0;
     			if (isLeft) {
     				int pos = brother->keyNum() - 1;
     				uchar* item = brother->itemAt(pos);
@@ -171,13 +167,11 @@ public:
     	int M = child->capacity();
         if (child->keyNum() > M) {
         	current ++;
-       // 	int start = child->isLeaf() ? keyStart : 0;
         	M ++;
             ItemList* t = nodeManager->newList(tid, child->isLeaf(), child->layout);
             if (parent != NULL) {
             	int reserve = (M - (M >> 1));
             	child->splitToRight(t, reserve);
-            	//child->updateSize();
             	t->updateSize();
             	child->header->size -= t->header->size;
             	uchar* it1 = child->itemAt(reserve - 1);
@@ -282,7 +276,6 @@ public:
             if (index == -1) {
                 index = t->keyNum() - 1;
                 childItem = t->itemAt(index);
-            	//t->updateItem(item, indexManager, 0, parser->keyLen());
                 memcpy(childItem, item, keyLen);
             } else {
             	childItem = t->itemAt(index);

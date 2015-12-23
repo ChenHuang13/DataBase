@@ -22,10 +22,10 @@
 #include "parser.h"
 #include <limits.h>
 
-#include "select.h"
-#include "insert.h"
-#include "delete.h"
-#include "update.h"
+#include "queryManager/select.h"
+#include "queryManager/insert.h"
+#include "queryManager/delete.h"
+#include "queryManager/update.h"
 #include "define.h"
 #include "tool.h"
 

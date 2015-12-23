@@ -8,8 +8,8 @@
 #ifndef EXEC_DELETE_H_
 #define EXEC_DELETE_H_
 
-#include "define.h"
-#include "parser.h"
+#include "../define.h"
+#include "../parser.h"
 void exec_delete(char* sql) {
 	char* prev, *next;
 	prev = sql;

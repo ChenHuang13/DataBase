@@ -9,11 +9,11 @@
 #define EXEC_SELECT_H_
 
 //#include "dataBaseManager.h"
-#include "define.h"
-#include "tool.h"
+#include "../define.h"
+#include "../tool.h"
 
-#include "print.h"
-#include "parser.h"
+#include "../print.h"
+#include "../parser.h"
 
 void exec_select(char* sql) {
 	if (cdbs == NULL) {
