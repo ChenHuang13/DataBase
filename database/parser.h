@@ -1,9 +1,6 @@
-/*
- * parser.h
- *
- *  Created on: 2014年12月20日
- *      Author: lql
- */
+//
+// Created by huangsy13 on 12/21/15.
+//
 
 #ifndef PARSER__H_
 #define PARSER__H_
@@ -260,4 +257,4 @@ struct Paser{
     }
 }paser;
 
-#endif /* PARSER_H_ */
+#endif
