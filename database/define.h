@@ -43,9 +43,11 @@ bool isFirst[100];
 vector <TableInfo*> tabs;
 int cost[100];
 int idx[100];
+ll query_sum, query_max, query_min;
 vector <pair<int, int> > ans1, ans2;
 vector <TableInfo*> tab1, tab2;
 vector <int> col1, col2, op;
 bool all;
+bool print_flag;
 
 #endif //DATABASE_DEFINE_H

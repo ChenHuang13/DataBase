@@ -14,9 +14,12 @@ void printCol(TableInfo* tb, int i, uchar* it) {
         if (tb->col[i].cb.dt == LL_TYPE) {
             ll v;
             memcpy(&v, it + tb->col[i].cs, 8);
-            printf("%lld\t", v);
+            if (print_flag) printf("%lld\t", v);
+            query_sum += v;
+            query_max = max(query_max, v);
+            query_min = min(query_min, v);
         } else {
-            printf("%s\t", (char*)(it + tb->col[i].cs));
+            if (print_flag) printf("%s\t", (char*)(it + tb->col[i].cs));
         }
     }
 }
