@@ -31,7 +31,7 @@
 
 class DataBaseManager{
 public:
-
+    bool inputFile;
     bool toTest;//是否进行测试
     SystemManager systemManager; //系统管理模块
     //数据库进行初始化
@@ -56,10 +56,19 @@ public:
             clearDataBase();
         }
         else {
+            toTest = false;
             cout<<"清空以前记录? y/n" << endl;
             cin >> ans;
             if (ans == 'y') {
                 clearDataBase();
+            }
+            cout << "使用文件输入？ y/n?"<<endl;
+            cin >> ans;
+            if(ans == 'y'){
+                inputFile = true;
+            }
+            else{
+                inputFile = false;
             }
         }
         loadDataBase();
@@ -80,12 +89,33 @@ public:
             cout << "测试完成！"<< endl;
         }
         else{
-            string fileName;
+            string order;
             while (true) {
-                cout << "请输入需要载入的包含sql语句的文件名（退出输入exit）：";
-                cin >> fileName;
-                if (fileName == "exit") break;
-                else paseFile(fileName);
+                if(inputFile){
+                    cout << "请输入需要载入的包含sql语句的文件名（退出输入exit）：";
+                    cin >> order;
+                    if (order == "exit") break;
+                    if (order == "switch"){
+                        inputFile = false;
+                        continue;
+                    }
+                    paseFile(order);
+                }
+                else{
+                    cout << ">>";
+                    cin >> order;
+                    if (order == "exit") break;
+                    if (order == "switch"){
+                        inputFile = true;
+                        continue;
+                    }
+                    char * sql = new char;
+                    strcpy(sql,order.c_str());
+                    execute(sql);
+                    delete  sql;
+
+                }
+
             }
         }
     }
@@ -368,21 +398,25 @@ public:
 
     //读入包含sql语句的文件，解析成为sql语句
     void paseFile(string fileName){
-        fin = fopen( ("../sql/" + fileName).c_str() , "r" );
-        char *str = fgets(buf, 1000, fin);
-        state = START;
-        while (str != NULL) {
-            int len = strlen(buf);
-            while (len > 0 && (buf[len - 1] == '\n' || buf[len - 1] == 13)) {
-                buf[len - 1] = '\0';
-                len--;
+        if (fin = fopen( ("../sql/" + fileName).c_str() , "r" )) {
+            char *str = fgets(buf, 1000, fin);
+            state = START;
+            while (str != NULL) {
+                int len = strlen(buf);
+                while (len > 0 && (buf[len - 1] == '\n' || buf[len - 1] == 13)) {
+                    buf[len - 1] = '\0';
+                    len--;
+                }
+                if (len != 0) {
+                    execute(buf);
+                }
+                str = fgets(buf, 1000, fin);
             }
-            if (len != 0) {
-                execute(buf);
-            }
-            str = fgets(buf, 1000, fin);
+            fclose(fin);
         }
-        fclose(fin);
+        else{
+            cout <<"File "<< fileName << " doesn't exist!\r";
+        }
     }
 };
 
