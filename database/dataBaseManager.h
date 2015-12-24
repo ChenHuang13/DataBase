@@ -100,16 +100,24 @@ public:
                 }
                 else{
                     cout << ">>";
-                    cin >> order;
+                    order = "";
+                    do{
+                        string orderSub;
+                        cin >> orderSub;
+
+                        order += ' ' + orderSub;
+                    }while(order[order.size()-1] != ';' && order != "exit" && order != "switch");
+                    cout <<"得到的命令为："<< order<<endl;
                     if (order == "exit") break;
                     if (order == "switch"){
                         inputFile = true;
                         continue;
                     }
-                    char * sql = new char;
+                    char sql[order.size()+1];
                     strcpy(sql,order.c_str());
+                    sql[order.size()] = '\0';
+                    state = START;
                     execute(sql);
-                    delete  sql;
 
                 }
 
