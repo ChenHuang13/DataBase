@@ -12,7 +12,6 @@
 
 class QueryManager{
 public:
-
     static void exec_delete(char* sql) {
         char* prev, *next;
         prev = sql;
