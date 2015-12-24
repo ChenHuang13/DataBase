@@ -107,7 +107,7 @@ public:
 
                         order += ' ' + orderSub;
                     }while(order[order.size()-1] != ';' && order != "exit" && order != "switch");
-                    cout <<"得到的命令为："<< order<<endl;
+                    //cout <<"得到的命令为："<< order<<endl;
                     if (order == "exit") break;
                     if (order == "switch"){
                         inputFile = true;
