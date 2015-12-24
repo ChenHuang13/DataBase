@@ -22,10 +22,7 @@
 #include "parser.h"
 #include <limits.h>
 
-#include "queryManager/select.h"
-#include "queryManager/insert.h"
-#include "queryManager/delete.h"
-#include "queryManager/update.h"
+#include "queryManager/queryManager.h"
 #include "define.h"
 #include "tool.h"
 
@@ -227,13 +224,13 @@ public:
                     if (ctb == NULL) {
                         printf("error: no table\n");
                     }
-                    if (*next != '\0') exec_insert(next);
+                    if (*next != '\0') QueryManager::exec_insert(next);
                 } else if (strcmp(prev, "SELECT") == 0) {
-                    exec_select(next + 1);
+                    QueryManager::exec_select(next + 1);
                 } else if (strcmp(prev, "DELETE") == 0) {
-                    exec_delete(next + 1);
+                    QueryManager::exec_delete(next + 1);
                 } else if (strcmp(prev, "UPDATE") == 0) {
-                    exec_update(next + 1);
+                    QueryManager::exec_update(next + 1);
                 } else if (strcmp(prev, "CREATE") == 0) {
                     prev = next + 1;
                     next = paser.getWord(prev, ' ');
@@ -389,7 +386,7 @@ public:
                 }
                 break;
             case INSERT:
-                exec_insert(sql);
+                QueryManager::exec_insert(sql);
                 break;
             default: break;
         }

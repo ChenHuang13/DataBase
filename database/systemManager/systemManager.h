@@ -15,10 +15,6 @@
 #include <set>
 #include <limits.h>
 
-#include "../queryManager/select.h"
-#include "../queryManager/insert.h"
-#include "../queryManager/delete.h"
-#include "../queryManager/update.h"
 #include "../define.h"
 #include "../tool.h"
 
