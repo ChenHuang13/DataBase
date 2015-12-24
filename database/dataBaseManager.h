@@ -6,32 +6,32 @@
 #define DATABASE_DATABASEMANAGER_H
 
 #define COL_NAME 0
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include <iostream>
 #include "utils/pagedef.h"
 #include "recordManager/ItemList.h"
 #include "recordManager/layout.h"
 #include "utils/MyBitMap.h"
-#include "systemManager/DB.h"
+#include "systemManager/databaseInfo.h"
 #include "systemManager/systemManager.h"
 #include <cstring>
 #include <set>
 #include "parser.h"
 #include <limits.h>
 
-#include "select.h"
-#include "insert.h"
-#include "delete.h"
-#include "update.h"
+#include "queryManager/select.h"
+#include "queryManager/insert.h"
+#include "queryManager/delete.h"
+#include "queryManager/update.h"
 #include "define.h"
 #include "tool.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
 class DataBaseManager{
 public:
-
+    bool inputFile;
     bool toTest;//是否进行测试
     SystemManager systemManager; //系统管理模块
     //数据库进行初始化
@@ -56,10 +56,19 @@ public:
             clearDataBase();
         }
         else {
+            toTest = false;
             cout<<"清空以前记录? y/n" << endl;
             cin >> ans;
             if (ans == 'y') {
                 clearDataBase();
+            }
+            cout << "使用文件输入？ y/n?"<<endl;
+            cin >> ans;
+            if(ans == 'y'){
+                inputFile = true;
+            }
+            else{
+                inputFile = false;
             }
         }
         loadDataBase();
@@ -69,23 +78,44 @@ public:
     void run(){
         if (toTest){
             cout << "开始测试！"<<endl;
-            fileInput("test.sql");
-            fileInput("book.sql");
-            fileInput("orders.sql");
-            fileInput("select.sql");
-            fileInput("join.sql");
-            fileInput("delete.sql");
-            fileInput("join.sql");
-            fileInput("update.sql");
+            paseFile("test.sql");
+            paseFile("book.sql");
+            paseFile("orders.sql");
+            paseFile("select.sql");
+            paseFile("join.sql");
+            paseFile("delete.sql");
+            paseFile("join.sql");
+            paseFile("update.sql");
             cout << "测试完成！"<< endl;
         }
         else{
-            string fileName;
+            string order;
             while (true) {
-                cout << "请输入需要载入的包含sql语句的文件名（退出输入exit）：";
-                cin >> fileName;
-                if (fileName == "exit") break;
-                else fileInput(fileName);
+                if(inputFile){
+                    cout << "请输入需要载入的包含sql语句的文件名（退出输入exit）：";
+                    cin >> order;
+                    if (order == "exit") break;
+                    if (order == "switch"){
+                        inputFile = false;
+                        continue;
+                    }
+                    paseFile(order);
+                }
+                else{
+                    cout << ">>";
+                    cin >> order;
+                    if (order == "exit") break;
+                    if (order == "switch"){
+                        inputFile = true;
+                        continue;
+                    }
+                    char * sql = new char;
+                    strcpy(sql,order.c_str());
+                    execute(sql);
+                    delete  sql;
+
+                }
+
             }
         }
     }
@@ -137,39 +167,7 @@ public:
         close(fd);
     }
 
-    void getl(void* x, bool e, uchar* a) {
-        memcpy(a, x, 8);
-        if (e) {
-            memset(a + 8, 0xff, 8);
-        } else {
-            memset(a + 8, 0x7f, 8);
-        }
-    }
-    void getr(void* x, bool e, uchar* a) {
-        memcpy(a, x, 8);
-        if (e) {
-            memset(a + 8, 0x7f, 8);
-        } else {
-            memset(a + 8, 0xff, 8);
-        }
-    }
-    void getsl(char* x, bool e, int len, uchar* a) {
-        strcpy((char*)a, x);
-        if (e) {
-            memset(a + len, 0xff, 8);
-        } else {
-            memset(a + len, 0x7f, 8);
-        }
-    }
-    void getsr(char* x, bool e, int len, uchar* a) {
-        strcpy((char*)a, x);
-        if (e) {
-            memset(a + len, 0x7f, 8);
-        } else {
-            memset(a + len, 0xff, 8);
-        }
-    }
-
+    //执行单条sql语句
     void execute(char* sql) {
         int len = strlen(sql);
         char* prev, *next;
@@ -192,7 +190,7 @@ public:
                     }
                     prev = next + 1;
                     next = paser.getWord(prev, ';');
-                    Table* tb = cdbs->getTable(prev);
+                    TableInfo* tb = cdbs->getTable(prev);
                     if (tb == NULL) {
                         printf("error: no table\n");
                         return;
@@ -246,7 +244,7 @@ public:
                         }
                         prev = next + 1;
                         next = paser.getWord(prev, '(');
-                        Table* tb = cdbs->getTable(prev);
+                        TableInfo* tb = cdbs->getTable(prev);
                         if (tb == NULL) {
                             printf("error:no table\n");
                             return;
@@ -276,7 +274,7 @@ public:
                 } else if (strcmp(prev, "USE") == 0) {
                     prev = next + 1;
                     next = paser.getWord(prev, ';');
-                    if (!usedb(prev)) {
+                    if (!systemManager.usedb(prev)) {
                         printf("error\n");
                         return;
                     }
@@ -296,7 +294,7 @@ public:
                         }
                         prev = next + 1;
                         next = paser.getWord(prev, '(');
-                        Table* tb = cdbs->getTable(prev);
+                        TableInfo* tb = cdbs->getTable(prev);
                         if (tb == NULL) {
                             printf("error: no table\n");
                             return;
@@ -383,7 +381,7 @@ public:
                     return;
                 }
                 if (cdbs->createTB(&create)) {
-                    Table* tb = cdbs->getTable(create.tn);
+                    TableInfo* tb = cdbs->getTable(create.tn);
                     if (primary == -1) primary = 0;
                     tb->createIndex(create.name[primary]);
                 } else {
@@ -397,45 +395,28 @@ public:
         }
     }
 
-    bool closedb() {
-        if (cdbs == NULL) return false;
-        cdbs->closeDB();
-        delete cdbs;
-        cdbs = NULL;
-        return true;
-    }
 
-    bool usedb(char* name) {
-        multiset<char*, Cmp>::iterator it = dbs.find(name);
-        if (it == dbs.end()) {
-            return false;
-        }
-        if (cdbs != NULL){
-            if (strcmp(cdbs->dname, name) == 0) return false;
-            closedb();
-        }
-        cdbs = new DB(
-                name, fm, bpm, bpl
-        );
-        return true;
-    }
-
-    void fileInput(string fileName) {
-        fin = fopen( ("../sql/" + fileName).c_str() , "r" );
-        char *str = fgets(buf, 1000, fin);
-        state = START;
-        while (str != NULL) {
-            int len = strlen(buf);
-            while (len > 0 && (buf[len - 1] == '\n' || buf[len - 1] == 13)) {
-                buf[len - 1] = '\0';
-                len--;
+    //读入包含sql语句的文件，解析成为sql语句
+    void paseFile(string fileName){
+        if (fin = fopen( ("../sql/" + fileName).c_str() , "r" )) {
+            char *str = fgets(buf, 1000, fin);
+            state = START;
+            while (str != NULL) {
+                int len = strlen(buf);
+                while (len > 0 && (buf[len - 1] == '\n' || buf[len - 1] == 13)) {
+                    buf[len - 1] = '\0';
+                    len--;
+                }
+                if (len != 0) {
+                    execute(buf);
+                }
+                str = fgets(buf, 1000, fin);
             }
-            if (len != 0) {
-                execute(buf);
-            }
-            str = fgets(buf, 1000, fin);
+            fclose(fin);
         }
-        fclose(fin);
+        else{
+            cout <<"File "<< fileName << " doesn't exist!\r";
+        }
     }
 };
 

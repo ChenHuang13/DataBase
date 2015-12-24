@@ -8,8 +8,8 @@
 #ifndef EXEC_INSERT_H_
 #define EXEC_INSERT_H_
 
-#include "define.h"
-#include "parser.h"
+#include "../define.h"
+#include "../parser.h"
 
 void exec_insert(char* sql) {
 	char* next = sql;

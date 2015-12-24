@@ -8,9 +8,8 @@
 #ifndef EXEC_UPDATE_H_
 #define EXEC_UPDATE_H_
 
-#include "define.h"
-#include "parse_where.h"
-#include "parser.h"
+#include "../define.h"
+#include "../parser.h"
 void exec_update(char* sql) {
 	if (cdbs == NULL) {
 		printf("error : no db\n");
@@ -100,7 +99,7 @@ void exec_update(char* sql) {
 	next = paser.getWord(prev, ' ');
 	tabs.clear();
 	tabs.push_back(ctb);
-	exec_where(next + 1);
+	paser.exec_where(next + 1);
 	if (errwhere == 1) {
 		return;
 	}

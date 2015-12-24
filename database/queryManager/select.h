@@ -9,12 +9,11 @@
 #define EXEC_SELECT_H_
 
 //#include "dataBaseManager.h"
-#include "define.h"
-#include "tool.h"
+#include "../define.h"
+#include "../tool.h"
 
-#include "parse_where.h"
-#include "print.h"
-#include "parser.h"
+#include "myPrint.h"
+#include "../parser.h"
 
 void exec_select(char* sql) {
 	if (cdbs == NULL) {
@@ -56,7 +55,7 @@ void exec_select(char* sql) {
 		while (*next != ',' && *next != ' ') ++ next;
 		char ch = *next;
 		*next = '\0';
-		Table* ttb = cdbs->getTable(prev);
+		TableInfo* ttb = cdbs->getTable(prev);
 		if (ttb == NULL) {
 			printf("error: no table\n");
 			return;
@@ -76,7 +75,7 @@ void exec_select(char* sql) {
 				return;
 			}
 		} else {
-			Table* ctt = cdbs->getTable(tname[i]);
+			TableInfo* ctt = cdbs->getTable(tname[i]);
 			if (ctt == NULL) {
 				printf("error: no table\n");
 				return;
@@ -88,9 +87,9 @@ void exec_select(char* sql) {
 		}
 	}
 	next = paser.getWord(prev, ' ');
-	exec_where(next + 1);
+	paser.exec_where(next + 1);
 	if (errwhere == 1) return;
-	getCost();
+	paser.getCost();
 	ans1.clear();
 	cout << cidx<<endl;
 	ctb->select(cidx, ctb->range, ans1);
@@ -128,7 +127,7 @@ void exec_select(char* sql) {
 	for (int i = 0; i < stb->cn; ++ i) connect[i] = false;
 	for (int i = 0; i < cn; ++ i) {
 		if (strcmp(tab2[i]->tn, stb->tn) == 0) {
-			Table* t = tab2[i];
+			TableInfo* t = tab2[i];
 			tab2[i] = tab1[i];
 			tab1[i] = t;
 			int c = col1[i];
