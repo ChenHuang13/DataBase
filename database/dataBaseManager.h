@@ -403,7 +403,11 @@ public:
 
     //读入包含sql语句的文件，解析成为sql语句
     void paseFile(string fileName){
-        if (fin = fopen( ("../sql/" + fileName).c_str() , "r" )) {
+        //cout << getenv("HOME")  << "/" <<fileName<<endl;
+        string home = getenv("HOME");
+        fileName = home +"/sql/"+ fileName;
+        //cout << fileName << endl;
+        if (fin = fopen( fileName.c_str() , "r" )) {
             char *str = fgets(buf, 1000, fin);
             state = START;
             while (str != NULL) {
