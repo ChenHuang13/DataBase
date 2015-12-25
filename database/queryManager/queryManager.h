@@ -136,15 +136,17 @@ public:
             return;
         }
         extop extop_flag = extop_nop;
+        while (sql[0] == ' ')
+            ++sql;
         string s_sql(sql);
-        if (s_sql.find("sum") >= 0)
-            extop_flag = extop_sum;
-        else if (s_sql.find("average") >= 0)
-            extop_flag = extop_average;
-        else if (s_sql.find("max") >= 0)
-            extop_flag = extop_max;
-        else if (s_sql.find("min") >= 0)
-            extop_flag = extop_min;
+        if (s_sql.find("sum ") == 0)
+            extop_flag = extop_sum, sql = sql + s_sql.find("sum ") + 4;
+        else if (s_sql.find("average ") == 0)
+            extop_flag = extop_average, sql = sql + s_sql.find("average ") + 8;
+        else if (s_sql.find("max ") == 0)
+            extop_flag = extop_max, sql = sql + s_sql.find("max ") + 4;
+        else if (s_sql.find("min ") == 0)
+            extop_flag = extop_min, sql = sql + s_sql.find("min ") + 4;
         ctb = NULL;
         tname.clear();
         cname.clear();
@@ -216,10 +218,10 @@ public:
         if (errwhere == 1) return;
         paser.getCost();
         ans1.clear();
-        cout << cidx << endl;
+        //cout << cidx << endl;
         ctb->select(cidx, ctb->range, ans1);
         int m = ans1.size();
-        cout << "ok" << endl;
+        //cout << "ok" << endl;
         int countt = 0;
         if (n == 1) {
             query_sum = 0;
@@ -234,7 +236,7 @@ public:
                 uchar *it = ctb->getItem(p, s);
                 if (all) printItem(ctb, it);
                 else printCols1(it);
-                printf("\n");
+                if (extop_flag == extop_nop) printf("\n");
                 countt++;
             }
             if (extop_flag == extop_nop) {
