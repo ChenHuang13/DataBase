@@ -29,7 +29,7 @@ public:
         }
         ctb = cdbs->getTable(prev);
         if (ctb == NULL) {
-            printf("error: no table\n");
+            cout << "表 " << prev << " 不存在\r";
             return;
         }
         tabs.clear();
@@ -184,7 +184,8 @@ public:
             *next = '\0';
             TableInfo *ttb = cdbs->getTable(prev);
             if (ttb == NULL) {
-                printf("error: no table\n");
+                cout << "表 " << prev << " 不存在\r";
+
                 return;
             }
             tabs.push_back(ttb);
@@ -204,7 +205,7 @@ public:
             } else {
                 TableInfo *ctt = cdbs->getTable(tname[i]);
                 if (ctt == NULL) {
-                    printf("error: no table\n");
+                    cout << "表 " << tname[i] << " 不存在\r";
                     return;
                 }
                 if (ctt->getcolid(cname[i]) == -1) {
@@ -345,7 +346,7 @@ public:
         next = paser.getWord(prev, ' ');
         ctb = cdbs->getTable(prev);
         if (ctb == NULL) {
-            printf("error: no table\n");
+            cout << "表 " << prev << " 不存在\r";
             return;
         }
         prev = next + 1;
