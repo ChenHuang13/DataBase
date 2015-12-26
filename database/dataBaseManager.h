@@ -101,11 +101,15 @@ public:
                 else{
                     cout << ">>";
                     order = "";
+                    bool first = true;
                     do{
                         string orderSub;
                         cin >> orderSub;
-
-                        order += ' ' + orderSub;
+                        if (first){
+                            order = orderSub;
+                            first = false;
+                        }
+                        else order += ' ' + orderSub;
                     }while(order[order.size()-1] != ';' && order != "exit" && order != "switch");
                     //cout <<"得到的命令为："<< order<<endl;
                     if (order == "exit") break;
@@ -120,6 +124,7 @@ public:
                     execute(sql);
 
                 }
+
 
             }
         }
@@ -230,7 +235,7 @@ public:
                     while (*next != '(' && *next != '\0') ++ next;
                     state = INSERT;
                     if (ctb == NULL) {
-                        printf("error: no table\n");
+                        cout << "表 "<<prev << " 不存在！"<<endl;
                     }
                     if (*next != '\0') QueryManager::exec_insert(next);
                 } else if (strcmp(prev, "SELECT") == 0) {
@@ -424,6 +429,7 @@ public:
             fclose(fin);
         }
         else{
+            cout << "[warning] ";
             cout <<"File "<< fileName << " doesn't exist!\r";
         }
     }
