@@ -29,7 +29,6 @@ CREATE TABLE orders (
 ); 
 CREATE INDEX orders(quantity);
 
-
 INSERT INTO publisher VALUES 
  (1);
 

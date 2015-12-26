@@ -254,6 +254,9 @@ struct Paser{
             cidx = idx[0];
             sidx = idx[1];
         }
+        if (n == 2) return;
+        ttb = tabs[2];
+        tidx = idx[2];
     }
 }paser;
 
