@@ -100,6 +100,23 @@ public:
                         return;
                     }
                     break;
+                case DB_TYPE:
+                    next = paser.getWord(prev, e);
+                    //printf("data\t%s\n", prev);
+                    if (*prev == '\'') {
+                        printf("error: insert string instead of double\n");
+                        return;
+                    }
+                    if (*prev != 'n') {
+                        double d = atof(prev);
+                        memcpy(start, &d, len);
+                    } else if (nt == N) {
+                        bm ^= (1 << cc);
+                    } else {
+                        printf("error: insert null value, but not null type\n");
+                        return;
+                    }
+                    break;
                 case DT_TYPE:
                 case ST_TYPE:
                     while (*prev == ' ') ++prev;
@@ -255,13 +272,13 @@ public:
             if (extop_flag == extop_nop) {
                 printf("counted:%d\n", countt);
             } else if (extop_flag == extop_sum) {
-                printf("sum:%lld\n", query_sum);
+                printf("sum:%lf\n", query_sum);
             } else if (extop_flag == extop_average) {
                 printf("average:%lf\n", 1.0 * query_sum / countt);
             } else if (extop_flag == extop_max) {
-                printf("max:%lld\n", query_max);
+                printf("max:%lf\n", query_max);
             } else if (extop_flag == extop_min) {
-                printf("min:%lld\n", query_min);
+                printf("min:%lf\n", query_min);
             }
             return;
         }
@@ -508,6 +525,28 @@ public:
                         start += 8;
                     } else {
                         ll key = atoll(prev);
+                        memcpy(start, &key, 8);
+                        start += 8;
+                    }
+                    break;
+                case DB_TYPE:
+                    if (*prev == '\'') {
+                        printf("error: update a double-type element as a string.");
+                        return;
+                    }
+                    next = prev + 1;
+                    while (*next != ' ' && *next != ',') ++next;
+                    brk = *next;
+                    *next = '\0';
+                    if (*prev == 'n') {
+                        if (col.cb.nt == UN) {
+                            printf("error: update a unnull-type element as null.");
+                            return;
+                        }
+                        cbm ^= (1 << cc);
+                        start += 8;
+                    } else {
+                        double key = atof(prev);
                         memcpy(start, &key, 8);
                         start += 8;
                     }

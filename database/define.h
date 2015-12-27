@@ -44,7 +44,7 @@ int cis[100];
 vector <TableInfo*> tabs;
 int cost[100];
 int idx[100];
-ll query_sum, query_max, query_min;
+double query_sum, query_max, query_min;
 vector <pair<int, int> > ans1, ans2, ans3;
 vector <TableInfo*> tab1, tab2;
 vector <int> col1, col2, op;
