@@ -11,6 +11,7 @@
 #include "../bufmanager/BufPageManager.h"
 #include <string.h>
 #include <cstdlib>
+
 //#include "../bufmanager/BufPageManager.h"
 struct ItemList {
 public:
@@ -67,10 +68,8 @@ public:
 		} else {
 			return itemArray + index * layout->itemLen;
 		}
-	}/*
-	uchar* itemAtSlot(int slot) {
-		return itemArray + slot * layout->itemLen;
-	}*/
+    }
+
 	void updateItem(const uchar* buf, int index, int start, int len) {
 		uchar* b = itemAt(index);
 		memcpy(b + start, buf, len);
@@ -203,7 +202,6 @@ public:
 	void markDirty() {
 		bpm->markDirty(bufIndex);
 	}
-
 
 	bool isLeaf() {
 		return (header->listType == LEAF_TYPE);
