@@ -231,7 +231,7 @@ void MainWindow::showTable(QString tableName)
 
     int kk = tb->cn;
     for (int i = 0; i < kk; ++ i) {
-        headerList.append(tb->col[i].name);
+        headerList.append( tb->col[i].name );
     }
 
     int colLength  = headerList.length();
@@ -239,12 +239,13 @@ void MainWindow::showTable(QString tableName)
         model->setHorizontalHeaderItem(i, new QStandardItem( headerList[i]  ));
     }
 
-    QList <QStringList> dataList;// = getDataList(tableName);
+    QList <QStringList> dataList = QueryManager::getDataList(tableName);
     for (int i = 0 ; i < dataList .length(); i++){
         for (int j = 0 ; j < colLength ; j++){
             model->setItem(i, j, new QStandardItem(dataList[i][j]));
         }
     }
+
     //利用setModel()方法将数据模型与QTableView绑定
     ui->tableView->setModel(model);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);

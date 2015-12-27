@@ -354,7 +354,7 @@ struct TableInfo {
         int st = (isNull == 1) ? 0 : col[k].cb.cl;
         while (true) {
             int n = l->keyNum();
-            //	cout << "n"<<n<<endl;
+            qDebug() << "selectAll() key num:" <<n;
             for (int i = 0; i < n; ++ i) {
                 uchar* it = l->itemAt(i);
                 int p, s;
@@ -431,10 +431,8 @@ struct TableInfo {
     void select(int k, Range* r, vector<pair<int, int> >& res) {
         if (r[k].rt == ALL) {
             tt = 2;
-            cout <<"all"<<endl;
             selectAll(k, 0, r, res);
             tt = 0;
-            cout <<"all"<<endl;
             selectAll(k, 1, r, res);
         } else if (r[k].rt == RANGE) {
             selectRange(k, r, res);
