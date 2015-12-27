@@ -82,6 +82,8 @@ struct Paser{
         col1.clear();
         col2.clear();
         op.clear();
+        like_col.clear();
+        like_string.clear();
         int n = tabs.size();
         char* prev, *next;
         prev = sql;
@@ -143,6 +145,9 @@ struct Paser{
                 case 'i':
                     cp = IS;
                     next += 2;
+                case 'l':
+                    cp = LI;
+                    next += 4;
             }
             //	cout <<*next<<endl;
             while (*next == ' ') ++ next;
@@ -155,8 +160,13 @@ struct Paser{
                 next = prev;
                 while (*next != '\'') ++ next;
                 *next = '\0';
-                getRange(prev, strlen(prev) + 1, ctb->col[cc].cb.cl, ctb->col[cc].cb.dt, cp);
-                ctb->merge(cc, cr);
+                if (cp == LI) {
+                    like_col.push_back(cc);
+                    like_string.push_back(string(prev));
+                } else {
+                    getRange(prev, strlen(prev) + 1, ctb->col[cc].cb.cl, ctb->col[cc].cb.dt, cp);
+                    ctb->merge(cc, cr);
+                }
                 while (*next != ' ' && *next != ';') ++ next;
                 brk = *next;
             } else if ( isCha(*prev)) {

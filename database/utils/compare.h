@@ -15,12 +15,14 @@ using namespace std;
 #define LL_TYPE 0
 #define DB_TYPE 1
 #define ST_TYPE 2
+#define DT_TYPE 3
 #define L 0
 #define G 3
 #define LE 1
 #define GE 2
 #define E 4
 #define IS 5
+#define LI 6
 #define UNI 0
 #define UNUNI 1
 #define N 0

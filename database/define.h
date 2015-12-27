@@ -33,6 +33,8 @@ int bm;
 static Create create;
 ll llmin = LONG_LONG_MIN;
 ll llmax = LONG_LONG_MAX;
+double dbmin = LONG_LONG_MIN;
+double dbmax = LONG_LONG_MAX;
 TableInfo* ctb, *stb, *ttb;
 int cidx, sidx, tidx;
 vector <char*> tname;
@@ -46,6 +48,8 @@ ll query_sum, query_max, query_min;
 vector <pair<int, int> > ans1, ans2, ans3;
 vector <TableInfo*> tab1, tab2;
 vector <int> col1, col2, op;
+vector <int> like_col;
+vector <string> like_string;
 bool all;
 bool print_flag;
 
