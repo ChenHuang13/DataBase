@@ -33,6 +33,8 @@ int bm;
 static Create create;
 ll llmin = LONG_LONG_MIN;
 ll llmax = LONG_LONG_MAX;
+double dbmin = LONG_LONG_MIN;
+double dbmax = LONG_LONG_MAX;
 TableInfo* ctb, *stb, *ttb;
 int cidx, sidx, tidx;
 vector <char*> tname;

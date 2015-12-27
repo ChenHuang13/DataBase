@@ -94,6 +94,7 @@ public:
                         return;
                     }
                     break;
+                case DT_TYPE:
                 case ST_TYPE:
                     while (*prev == ' ') ++prev;
                     if (*prev == '\'') {
@@ -500,6 +501,7 @@ public:
                         start += 8;
                     }
                     break;
+                case DT_TYPE:
                 case ST_TYPE:
                     if (*prev == '\'') {
                         prev++;

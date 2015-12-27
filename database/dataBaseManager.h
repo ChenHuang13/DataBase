@@ -219,6 +219,9 @@ public:
                         if (kkk == ST_TYPE) {
                             printf("type: string\n");
                         }
+                        if (kkk == DT_TYPE) {
+                            printf("type: date\n");
+                        }
                     }
                     return;
                 }
@@ -366,6 +369,12 @@ public:
                             prev = next + 1;
                             next = paser.getWord(prev, ')');
                             create.c[n].cl = 8;
+                            break;
+                        case 'd':
+                            create.c[n].dt = DT_TYPE;
+                            prev = next + 1;
+                            next = paser.getWord(prev, ')');
+                            create.c[n].cl = atoi(prev) + 1;
                             break;
                         default:
                             create.c[n].dt = DB_TYPE;

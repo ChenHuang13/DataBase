@@ -13,7 +13,8 @@ void setMin(uchar* a, int dt, int cl) {
             memcpy(a, &llmin, 8);
             memset(a + 8, 0xff, 8);
         case DB_TYPE:
-            //todo
+            memcpy(a, &dbmin, 8);
+            memset(a + 8, 0xff, 8);
         default:
             a[0] = 0;
             memset(a + cl, 0xff, 8);
@@ -26,7 +27,8 @@ void setMax(uchar* b, int dt, int cl) {
             memcpy(b, &llmax, 8);
             memset(b + 8, 0xff, 8);
         case DB_TYPE:
-            //todo
+            memcpy(b, &dbmax, 8);
+            memset(b + 8, 0xff, 8);
         default:
             b[0] = 255;
             b[1] = 0;
