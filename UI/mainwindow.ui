@@ -98,16 +98,9 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonNewRecord">
+          <widget class="QPushButton" name="excuteSQL">
            <property name="text">
-            <string>New Record</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonDeleteRecord">
-           <property name="text">
-            <string>Delete Record</string>
+            <string>excute sql...</string>
            </property>
           </widget>
          </item>

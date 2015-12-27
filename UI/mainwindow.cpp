@@ -458,6 +458,25 @@ void MainWindow::buttonEnable(bool flag)
      */
     ui->CreateTable->setEnabled(flag);
     ui->DeleteTable->setEnabled(flag);
-    ui->pushButtonNewRecord->setEnabled(flag);
-    ui->pushButtonDeleteRecord->setEnabled(flag);
+    ui->excuteSQL->setEnabled(flag);
+    //ui->pushButtonDeleteRecord->setEnabled(flag);
+}
+
+void MainWindow::on_excuteSQL_clicked()
+{
+    bool isOK;
+    QString fileName = QInputDialog::getText( NULL,"OPEN","Please input database name", QLineEdit::Normal,"",&isOK);
+
+    if( ! isOK ) {
+        return;
+    }
+
+    if ( ! fileName.isEmpty() ) {
+        char*  ch;
+        QByteArray ba = fileName.toLatin1();
+        ch = ba.data();
+        databaseManager.execute(ch);
+        updateComboBox();
+        showTable(ui->comboBox->currentText());
+    }
 }
