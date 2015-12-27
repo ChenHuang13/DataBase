@@ -21,6 +21,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QString currentDataBase;
 private slots:
     void on_OpenDatabase_clicked();
 

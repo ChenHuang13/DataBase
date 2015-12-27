@@ -133,7 +133,6 @@ public:
     }
 
     static QList<QStringList> getDataList(QString tableName) {
-
         char*  ch;
         QList<QStringList> list;
         QByteArray ba = tableName.toLatin1();
@@ -172,7 +171,7 @@ public:
         ctb->select(cidx, ctb->range, ans1);
 
         int m = ans1.size();
-        qDebug() << "Record num:" <<m <<endl;
+        //qDebug() << "Record num:" <<m <<endl;
         for (int nn = 0; nn < m; ++nn) {
             QStringList stringList;
             int p = ans1[nn].first;

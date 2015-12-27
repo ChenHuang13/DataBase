@@ -44,6 +44,7 @@ void MainWindow::on_OpenDatabase_clicked(){
            updateComboBox();
            showTable(ui->comboBox->currentText());
            buttonEnable(true);
+           currentDataBase = fileName;
        }
        else{
            ui->status->setText("Open Database failed!");
@@ -77,24 +78,45 @@ void MainWindow::on_NewDatabase_clicked(){
 
     if (!fileName.isEmpty())
     {
-        QFile file(fileName);
-        if (!file.open(QIODevice::WriteOnly))
-        {
-            qDebug() << "Imposible to create database!";
-            ui->status->setText("Impossible to create new database!");
-        }
-        else
-        {
-            file.close();
-            if (!createConnection(fileName))
-                ui->status->setText("Impossible to open database");
-            else
-            {
+        char*  ch;
+        QByteArray ba = fileName.toLatin1();
+        ch = ba.data();
+        if (databaseManager.systemManager.createdb(ch)){
+            if(databaseManager.systemManager.usedb(  ch )  ){
                 ui->status->setText("Database has been created");
                 updateComboBox();
                 showTable(ui->comboBox->currentText());
+                buttonEnable(true);
+                currentDataBase = fileName;
             }
+            else{
+                ui->status->setText("Database open failed!");
+            }
+
         }
+        else{
+            ui->status->setText("Create Database failed!");
+            buttonEnable(false);
+        }
+//        QFile file(fileName);
+//        if (!file.open(QIODevice::WriteOnly))
+//        {
+//            qDebug() << "Imposible to create database!";
+//            ui->status->setText("Impossible to create new database!");
+//        }
+//        else
+//        {
+//            file.close();
+//            if (!createConnection(fileName))
+//                ui->status->setText("Impossible to open database");
+//            else
+//            {
+//                ui->status->setText("Database has been created");
+//                updateComboBox();
+//                showTable(ui->comboBox->currentText());
+//            }
+//        }
+
     }
 }
 
@@ -208,12 +230,7 @@ void MainWindow::showTable(QString tableName)
      *
      * @return void
      */
-//    QSqlTableModel * model = new QSqlTableModel();
 
-//    model->setTable(tableName);
-//    model->select();
-
-    //    model->setEditStrategy(QSqlTableModel::OnFieldChange);
     char*  ch;
     QByteArray ba = tableName.toLatin1();
     ch = ba.data();
