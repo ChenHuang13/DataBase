@@ -424,6 +424,7 @@ public:
         //cout << fileName << endl;
         if (fin = fopen( fileName.c_str() , "r" )) {
             char *str = fgets(buf, 1000, fin);
+
             state = START;
             while (str != NULL) {
                 int len = strlen(buf);

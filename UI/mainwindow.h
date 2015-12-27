@@ -45,7 +45,7 @@ private slots:
 
     void updateComboBox();
 
-    void onTableCreate();
+    void onTableCreate(QString name , QStringList params);
 
     void onTableDelete();
 

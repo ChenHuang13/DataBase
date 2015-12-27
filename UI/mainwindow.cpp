@@ -45,6 +45,7 @@ void MainWindow::on_OpenDatabase_clicked(){
            showTable(ui->comboBox->currentText());
            buttonEnable(true);
            currentDataBase = fileName;
+           setWindowTitle(currentDataBase);
        }
        else{
            ui->status->setText("Open Database failed!");
@@ -88,6 +89,7 @@ void MainWindow::on_NewDatabase_clicked(){
                 showTable(ui->comboBox->currentText());
                 buttonEnable(true);
                 currentDataBase = fileName;
+                setWindowTitle(currentDataBase);
             }
             else{
                 ui->status->setText("Database open failed!");
@@ -353,14 +355,11 @@ void MainWindow::on_CreateTable_clicked()
 //    if(db.isOpen())
 //    {
 //        qDebug() << "creating table..";
-//        tableCre = new CreateTable(0, query);
-//        connect(tableCre, SIGNAL(done()), this, SLOT(onTableCreate()));
-//        tableCre->show();
+        tableCre = new CreateTable(0);
+        connect(tableCre, SIGNAL(done( QString,QStringList )), this, SLOT(onTableCreate(QString,QStringList)));
+        tableCre->show();
 //    }
-
      //ui->status->setText("No database connection!");
-
-
 }
 
 void MainWindow::on_DeleteTable_clicked()
@@ -394,7 +393,7 @@ void MainWindow::on_DeleteTable_clicked()
         updateComboBox();
 }
 
-void MainWindow::onTableCreate()
+void MainWindow::onTableCreate(QString name , QStringList params)
 {
     /**
      * Action after tablecreate dialog confirmed
@@ -404,6 +403,24 @@ void MainWindow::onTableCreate()
      *
      * @return void
      */
+    state = START;
+    QString order = "CREATE TABLE "+name+" (";
+    char*  ch;
+    QByteArray ba = order.toLatin1();
+    ch = ba.data();
+    databaseManager.execute(ch);
+    for (int i = 0 ; i < params.size(); i++){
+        order = params[i];
+        if (i != params.size()-1) order += ",";
+         ba = order.toLatin1();
+         ch = ba.data();
+         databaseManager.execute(ch);
+    }
+    order = ");";
+    ba = order.toLatin1();
+    ch = ba.data();
+    databaseManager.execute(ch);
+
     updateComboBox();
     showTable(ui->comboBox->currentText());
     ui->status->setText("Table created");

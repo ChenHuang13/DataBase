@@ -25,17 +25,16 @@ class CreateTable : public QDialog
     Q_OBJECT
 
 public:
-    explicit CreateTable(QWidget *parent = 0, QSqlQuery * qry = new QSqlQuery);
+    explicit CreateTable(QWidget *parent = 0);
     ~CreateTable();
 signals:
-    void done();
+    void done( QString tableName,QStringList tableParams);
 private slots:
     void on_buttonBox_accepted();
 
     void on_buttonBox_rejected();
 
 private:
-    QSqlQuery * query;
     Ui::CreateTable *ui;
 };
 
