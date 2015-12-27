@@ -2,8 +2,8 @@
 // Created by huangsy13 on 12/23/15.
 //
 
-#ifndef DATABASE_MYPRINT_H
-#define DATABASE_MYPRINT_H
+#ifndef DATABASE_PRINT_H
+#define DATABASE_PRINT_H
 #include <cstdio>
 #include "../utils/compare.h"
 #include "../dataBaseManager.h"

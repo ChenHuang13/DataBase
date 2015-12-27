@@ -16,8 +16,8 @@ enum extop {
 
 class QueryManager {
 public:
-    static void exec_delete(char* sql) {
-        char* prev, *next;
+    static void exec_delete(char *sql) {
+        char *prev, *next;
         prev = sql;
         next = paser.getWord(prev, ' ');
         prev = next + 1;
@@ -258,14 +258,18 @@ public:
             cns = cname.size();
             for (int i = 0; i < cns; ++i) {
                 if (strcmp(tname[i], ctb->tn) == 0) {
-                    isFirst[i] = true;
+                    cis[i] = 0;
                     cid[i] = ctb->cmap[cname[i]];
-                } else {
-                    isFirst[i] = false;
+                } else if (strcmp(tname[i], stb->tn) == 0) {
+                    cis[i] = 1;
                     cid[i] = stb->cmap[cname[i]];
+                } else {
+                    cis[i] = 2;
+                    cid[i] = ttb->cmap[cname[i]];
                 }
             }
         }
+        bool connect[100];
         int cn = tab2.size();
         for (int i = 0; i < stb->cn; ++i) connect[i] = false;
         for (int i = 0; i < cn; ++i) {
@@ -278,11 +282,26 @@ public:
                 col2[i] = c;
                 op[i] = (op[i] <= 3) ? 3 - op[i] : op[i];
             }
-            connect[col1[i]] = true;
+            if (strcmp(tab1[i]->tn, stb->tn) == 0)
+                connect[col1[i]] = true;
         }
         stb->copyRange(connect);
+
+        bool connect2[100];
+        if (n == 3) {
+            for (int j = 0; j < ttb->cn; ++j) connect2[j] = false;
+            for (int j = 0; j < cn; ++j) {
+                if (strcmp(tab1[j]->tn, ttb->tn) == 0)
+                    connect2[col1[j]] = true;
+                if (strcmp(tab2[j]->tn, ttb->tn) == 0)
+                    connect2[col2[j]] = true;
+            }
+            ttb->copyRange(connect2);
+        }
+
         for (int i = 0; i < m; ++i) {
             if (i != 0) stb->backRange(connect);
+
             int p = ans1[i].first;
             int s = ans1[i].second;
             uchar *it = ctb->getItem(p, s);
@@ -290,12 +309,13 @@ public:
             memcpy(&bm1, it, 4);
             uchar *cd;
             ans2.clear();
-            for (int j = 0; j < cn; ++j) {
-                const Col &col = ctb->col[col2[j]];
-                cd = it + col.cs;
-                getRange(cd, col.cb.cl, col.cb.cl, col.cb.dt, op[j]);
-                stb->merge(col1[j], cr);
-            }
+            for (int j = 0; j < cn; ++j)
+                if (strcmp(tab1[j]->tn, stb->tn) == 0) {
+                    const Col &col = ctb->col[col2[j]];
+                    cd = it + col.cs;
+                    getRange(cd, col.cb.cl, col.cb.cl, col.cb.dt, op[j]);
+                    stb->merge(col1[j], cr);
+                }
             int idx = -1;
             int w = -1;
             for (int j = 0; j < stb->cn; ++j) {
@@ -307,36 +327,124 @@ public:
                 }
             }
             stb->select(idx, stb->range, ans2);
-            int m2 = ans2.size();
-            for (int j = 0; j < m2; ++j) {
-                countt++;
-                int p2 = ans2[j].first;
-                int s2 = ans2[j].second;
-                uchar *it2 = stb->getItem(p2, s2);
-                int bm2;
-                memcpy(&bm2, it2, 4);
-                if (all) {
-                    printItem(ctb, it);
-                    printItem(stb, it2);
-                } else {
-                    for (int k = 0; k < cns; ++k) {
-                        if (isFirst[k]) {
-                            bm = bm1;
-                            printCol(ctb, cid[k], it);
-                        } else {
-                            bm = bm2;
-                            printCol(stb, cid[k], it2);
+            if (n == 2) {
+                int m2 = ans2.size();
+                for (int j = 0; j < m2; ++j) {
+                    countt++;
+                    int p2 = ans2[j].first;
+                    int s2 = ans2[j].second;
+                    uchar *it2 = stb->getItem(p2, s2);
+                    int bm2;
+                    memcpy(&bm2, it2, 4);
+                    if (all) {
+                        printItem(ctb, it);
+                        printItem(stb, it2);
+                    } else {
+                        for (int k = 0; k < cns; ++k) {
+                            if (cis[k] == 0) {
+                                bm = bm1;
+                                printCol(ctb, cid[k], it);
+                            } else {
+                                bm = bm2;
+                                printCol(stb, cid[k], it2);
+                            }
                         }
                     }
+                    printf("\n");
                 }
-                printf("\n");
+            } else {
+                int m2 = ans2.size();
+                for (int j = 0; j < m2; ++j) {
+                    ttb->backRange(connect2);
+
+                    int p2 = ans2[j].first;
+                    int s2 = ans2[j].second;
+                    uchar *it2 = stb->getItem(p2, s2);
+
+                    ll v;
+                    memcpy(&v, it2 + stb->col[0].cs, 8);
+                    if (v == 218353) {
+                        printf("Got");
+                    }
+                    int bm2;
+                    memcpy(&bm2, it2, 4);
+                    uchar *cd2;
+                    ans3.clear();
+                    for (int k = 0; k < cn; ++k)
+                        if (strcmp(tab1[k]->tn, ttb->tn) == 0) {
+                            if (strcmp(tab2[k]->tn, ctb->tn) == 0) {
+                                const Col &col = ctb->col[col2[k]];
+                                cd = it + col.cs;
+                                getRange(cd, col.cb.cl, col.cb.cl, col.cb.dt, op[k]);
+                            } else {
+                                const Col &col = stb->col[col2[k]];
+                                cd = it2 + col.cs;
+                                getRange(cd, col.cb.cl, col.cb.cl, col.cb.dt, op[k]);
+                            }
+                            ttb->merge(col1[k], cr);
+                        } else if (strcmp(tab2[k]->tn, ttb->tn) == 0) {
+                            if (strcmp(tab1[k]->tn, ctb->tn) == 0) {
+                                const Col &col = ctb->col[col1[k]];
+                                cd = it + col.cs;
+                                getRange(cd, col.cb.cl, col.cb.cl, col.cb.dt, (op[k] <= 3) ? 3 - op[k] : op[k]);
+                            } else {
+                                const Col &col = stb->col[col1[k]];
+                                cd = it2 + col.cs;
+                                getRange(cd, col.cb.cl, col.cb.cl, col.cb.dt, (op[k] <= 3) ? 3 - op[k] : op[k]);
+                            }
+                            ttb->merge(col2[k], cr);
+                        }
+
+                    int idx2 = -1;
+                    int w2 = -1;
+                    for (int k = 0; k < ttb->cn; ++k) {
+                        if (ttb->col[k].bpt[0] != NULL) {
+                            if (w2 == -1 || w2 > ttb->rangeCount(k)) {
+                                idx2 = k;
+                                w2 = ttb->rangeCount(k);
+                            }
+                        }
+                    }
+                    ttb->select(idx2, ttb->range, ans3);
+                    int m3 = ans3.size();
+                    for (int k = 0; k < m3; ++k) {
+                        countt++;
+                        int p3 = ans3[j].first;
+                        int s3 = ans3[j].second;
+                        uchar *it3 = ttb->getItem(p3, s3);
+                        int bm3;
+                        memcpy(&bm3, it3, 4);
+                        if (all) {
+                            printItem(ctb, it);
+                            printItem(stb, it2);
+                            printItem(ttb, it3);
+                        } else {
+                            for (int l = 0; l < cns; ++l) {
+                                if (cis[l] == 0) {
+                                    bm = bm1;
+                                    printCol(ctb, cid[l], it);
+                                } else if (cis[l] == 1) {
+                                    bm = bm2;
+                                    printCol(stb, cid[l], it2);
+                                } else {
+                                    bm = bm3;
+                                    printCol(ttb, cid[l], it3);
+                                }
+                            }
+                        }
+                        printf("\n");
+                    }
+                }
             }
         }
+
         printf("counted:%d\n", countt);
     }
 
 
-    static void exec_update(char *sql) {
+    static
+
+    void exec_update(char *sql) {
         if (cdbs == NULL) {
             printf("error : no db\n");
             return;
@@ -473,6 +581,7 @@ public:
             sss = ss;
         }
     }
+
 };
 
 #endif //DATABASE_QUERYMANAGER_H

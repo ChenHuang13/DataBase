@@ -28,7 +28,6 @@ HEADERS  += mainwindow.h \
     database/fileio/FileTable.h \
     database/indexManager/indexManager.h \
     database/indexManager/nodeManager.h \
-    database/indexManager/tree.h \
     database/queryManager/print.h \
     database/queryManager/queryManager.h \
     database/recordManager/ItemList.h \
