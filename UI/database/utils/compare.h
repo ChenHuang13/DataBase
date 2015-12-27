@@ -8,7 +8,7 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
-
+#include "../indexManager/tree.h"
 #include "pagedef.h"
 #include <cstring>
 using namespace std;

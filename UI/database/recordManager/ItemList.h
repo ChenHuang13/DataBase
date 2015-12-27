@@ -1,11 +1,12 @@
-//
-// Created by huangsy13 on 12/27/15.
-//
+/*
+ * ItemList.h
+ *
+ *  Created on: 2014年11月12日
+ *      Author: lql
+ */
 
-//这里是得到一页中记录或索引
-
-#ifndef DATABASE_ITEMLIST_H
-#define DATABASE_ITEMLIST_H
+#ifndef ITEM_LIST_H_
+#define ITEM_LIST_H_
 #include "../utils/MyBitMap.h"
 #include "../recordManager/layout.h"
 #include "../bufmanager/BufPageManager.h"
@@ -41,8 +42,11 @@ public:
 		return 0;
 	}
 public:
-
-    ItemList (BufType b, ListLayout* listLayout,BufPageManager* bpManager, int bufPageIndex,int nodeID) {
+	ItemList (
+	    BufType b, ListLayout* listLayout,
+	    BufPageManager* bpManager, int bufPageIndex,
+	    int nodeID
+	) {
 		id = nodeID;
 		data = b;
 		header = (ListHeader*) b;
@@ -53,7 +57,6 @@ public:
 		bpm = bpManager;
 		bufIndex = bufPageIndex;
 	}
-
 	int keyNum() {
 		return header->itemNum;
 	}
@@ -63,6 +66,8 @@ public:
 	uchar* itemAt(int index) {
 		if (layout->longItem) {
 			short p = biasArray[index];
+			//cout <<"slot "<< p << " " << indexManager << endl;
+//			checkSlot("find bias Array");
 			return itemArray + p * layout->itemLen;
 		} else {
 			return itemArray + index * layout->itemLen;
@@ -198,13 +203,9 @@ public:
 	void markAccess() {
 		bpm->access(bufIndex);
 	}
-
-    //把当前页标记为脏页
 	void markDirty() {
 		bpm->markDirty(bufIndex);
 	}
-
-
 	bool isLeaf() {
 		return (header->listType == LEAF_TYPE);
 	}
@@ -223,4 +224,4 @@ public:
 #endif
 };
 
-#endif
+#endif /* RECORDMANAGER_H_ */

@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     buttonEnable(false);
-
 }
 
 MainWindow::~MainWindow()

@@ -2,7 +2,7 @@
 // Created by huangsy13 on 12/23/15.
 //
 
-//这里对索引文件进行读取和管理
+//这里对索引文件进行读取
 
 #ifndef DATABASE_NODEMANAGER_H
 #define DATABASE_NODEMANAGER_H
@@ -12,6 +12,11 @@
 #include <string>
 
 using namespace std;
+
+struct Layout {
+    ListLayout* innerLayout;
+    ListLayout* leafLayout;
+};
 
 struct NodeManager {
     int fileID;
@@ -29,7 +34,6 @@ struct NodeManager {
         num = nodeNum;
     }
 
-    //得到一页中所有的数据。
     ItemList* getList(int tid, int nodeID, const Layout& layout) {
         int index;
         BufType b = bpm->getPage(fileID, nodeID, index);
@@ -41,7 +45,6 @@ struct NodeManager {
         return list;
     }
 
-    //得到一页中所有的数据。
     ItemList* getList(int tid, int nodeID, ListLayout* lo) {
         int index;
         BufType b = bpm->getPage(fileID, nodeID, index);
@@ -50,7 +53,6 @@ struct NodeManager {
         return list;
     }
 
-    //新建一个页
     ItemList* newList(int tid, bool isLeaf, ListLayout* layout) {
         int pos = num ++;
         int index;
@@ -62,19 +64,16 @@ struct NodeManager {
         return list;
     }
 
-    //删除一个页
     void release(ItemList* node) {
         int index = node->bufIndex;
         bpm->release(index);
         bpl->del(index);
     }
 
-    //newType
     int nt() {
         return fm->newType();
     }
 
-    //closeType
     void ct(int t, bool reserve) {
         int k = bpl->getFirst(t);
         while (!bpl->isHead(k)) {

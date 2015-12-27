@@ -1,27 +1,24 @@
-//
-// Created by huangsy13 on 12/27/15.
-//
+/*
+ * layout.h
+ *
+ *  Created on: 2014年11月12日
+ *      Author: lql
+ */
 
-#ifndef DATABASE_LAYOUT_H
-#define DATABASE_LAYOUT_H
-
+#ifndef LAYOUT_H_
+#define LAYOUT_H_
 #define LEAF_TYPE 0
 #define INNER_TYPE 1
-
 #include "../utils/pagedef.h"
 #include <iostream>
-
 using namespace std;
-
 #define SIMPLE_ITEM_LEN 8
-
 struct ListHeader {
 	int itemNum;
 	int listType;
 	int next;
 	int size;
 };
-
 int up(int k, int d) {
 	int c = (k >> d);
 	if (k != (c << d)) {
@@ -96,9 +93,4 @@ struct ListLayout {
 		}
 	}
 };
-
-struct Layout {
-    ListLayout* innerLayout; //内部节点在页内的数据分布格式
-    ListLayout* leafLayout;  //叶节点在页内的数据分布格式
-};
-#endif
+#endif /* LAYOUT_H_ */

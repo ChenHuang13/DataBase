@@ -11,7 +11,7 @@
 #include <vector>
 #include "../utils/MyLinkList.h"
 #include "../utils/pagedef.h"
-#include "../indexManager/indexManager.h"
+#include "../indexManager/tree.h"
 #include "../utils/compare.h"
 #include <map>
 #include <stdio.h>
@@ -39,7 +39,7 @@ struct Col {
     int root[2];
     int cs;
     int tid;
-    IndexManager* bpt[2];
+    Tree* bpt[2];
 };
 
 
@@ -163,11 +163,11 @@ struct TableInfo {
     //生成b树
     void getTrees(Col& a) {
         a.tid = nm->nt();
-        a.bpt[0] = new IndexManager (
+        a.bpt[0] = new Tree (
                 a.tid, nm, keyLen(a.cb), a.cb.cl + 8,
                 cmp(a.cb), a.root[0], a.cb.cl
         );
-        a.bpt[1] = new IndexManager (
+        a.bpt[1] = new Tree (
                 a.tid, nm, 8, 8, &keyu<ll>, a.root[1], 0
         );
     }
@@ -349,7 +349,7 @@ struct TableInfo {
 
     void selectAll(int k, int isNull, Range* r, vector<pair<int, int> >& res) {
         memset(ib, 0, len);
-        IndexManager* bpt = col[k].bpt[isNull];
+        Tree* bpt = col[k].bpt[isNull];
         ItemList* l = bpt->findLeft();
         int st = (isNull == 1) ? 0 : col[k].cb.cl;
         while (true) {
@@ -378,7 +378,7 @@ struct TableInfo {
 
     void selectRange(int k, Range* r, vector<pair<int, int> >& res) {
         memset(ib, 0, len);
-        IndexManager* bpt = col[k].bpt[0];
+        Tree* bpt = col[k].bpt[0];
         int p1, s1;
         bpt->findValue(r[k].a, p1, s1);
         ItemList* l = nm->getList(col[k].tid, p1, bpt->layout.leafLayout);

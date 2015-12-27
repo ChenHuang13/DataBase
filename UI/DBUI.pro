@@ -21,7 +21,32 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     createtable.h \
     deletetable.h \
-    main.h
+    main.h \
+    database/bufmanager/BufPageManager.h \
+    database/bufmanager/FindReplace.h \
+    database/fileio/FileManager.h \
+    database/fileio/FileTable.h \
+    database/indexManager/indexManager.h \
+    database/indexManager/nodeManager.h \
+    database/indexManager/tree.h \
+    database/queryManager/print.h \
+    database/queryManager/queryManager.h \
+    database/recordManager/ItemList.h \
+    database/recordManager/layout.h \
+    database/recordManager/recordManager.h \
+    database/systemManager/databaseInfo.h \
+    database/systemManager/systemManager.h \
+    database/systemManager/tableInfo.h \
+    database/utils/compare.h \
+    database/utils/MyBitMap.h \
+    database/utils/MyHashMap.h \
+    database/utils/MyLinkList.h \
+    database/utils/pagedef.h \
+    database/dataBaseManager.h \
+    database/define.h \
+    database/parser.h \
+    database/tool.h
+
 
 FORMS    += mainwindow.ui \
     createtable.ui \
