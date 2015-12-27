@@ -6,7 +6,8 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QTableView>
-
+#include <common.h>
+#include "QStandardItemModel"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,46 +15,45 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     buttonEnable(false);
+    databaseManager.init();
+    databaseManager.loadDataBase();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    databaseManager.quit();
     closeConnection();
 }
 
-void MainWindow::on_OpenDatabase_clicked()
-{
-    /**
-     * Opening existing database
-     *
-     * On clicked event open dialog is called
-     * to get the database full name, after that
-     * connection creates, in case of success
-     * cobmoBox and teble view are set to display
-     * corresponding information
-     *
-     * @return void
-     */
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Database"), QString(),
-                                                    tr("All Files (*.*);;Database Files (*.sqlite *.sqlite3 *.db)"));
+void MainWindow::on_OpenDatabase_clicked(){
+    //   QString fileName = QFileDialog::getOpenFileName(this, tr("Open Database"), QString(),  tr("All Files (*.*);;Database Files (*.sqlite *.sqlite3 *.db)"));
+    bool isOK;
+    QString fileName = QInputDialog::getText( NULL,"OPEN","Please input database name", QLineEdit::Normal,"",&isOK);
 
-    qDebug() << fileName;
-    if (!fileName.isEmpty()) {
+    if( ! isOK ) {
+        return;
+    }
 
-        if (!createConnection(fileName))
-            ui->status->setText("Impossible to open database");
-        else
-        {
-        ui->status->setText("Database has been opened");
-        updateComboBox();
-        showTable(ui->comboBox->currentText());
-        }
+    if ( ! fileName.isEmpty() ) {
+        char*  ch;
+        QByteArray ba = fileName.toLatin1();
+        ch = ba.data();
+       if (databaseManager.systemManager.usedb(  ch )  ){
+           ui->status->setText("Database has been opened");
+           updateComboBox();
+           showTable(ui->comboBox->currentText());
+           buttonEnable(true);
+       }
+       else{
+           ui->status->setText("Open Database failed!");
+           buttonEnable(false);
+       }
     }
 }
 
-void MainWindow::on_NewDatabase_clicked()
-{
+
+void MainWindow::on_NewDatabase_clicked(){
     /**
      * Opening existing database
      *
@@ -67,9 +67,14 @@ void MainWindow::on_NewDatabase_clicked()
      * @return void
      */
 
-    QString fileName = QFileDialog::getSaveFileName(this, tr("New Database"), QString(),
-                                                    tr("All Files (*.*);;Database Files (*.sqlite *.sqlite3 *.db)"));
-    qDebug() << fileName;
+    //QString fileName = QFileDialog::getSaveFileName(this, tr("New Database"), QString(), tr("All Files (*.*);;Database Files (*.sqlite *.sqlite3 *.db)"));
+    bool isOK;
+    QString fileName = QInputDialog::getText( NULL,"CREATE","Please input database name", QLineEdit::Normal,"",&isOK);
+
+    if( ! isOK ) {
+        return;
+    }
+
     if (!fileName.isEmpty())
     {
         QFile file(fileName);
@@ -182,9 +187,11 @@ void MainWindow::updateComboBox()
      */
     ui->comboBox->clear();
 
-    QStringList lst = db.tables();
+    QStringList lst = cdbs->getTableList();//db.tables();
+    qDebug() << lst.size();
     foreach (QString str, lst)
     {
+        qDebug()<<str;
         ui->comboBox->addItem(str);
     }
 }
@@ -201,14 +208,46 @@ void MainWindow::showTable(QString tableName)
      *
      * @return void
      */
-    QSqlTableModel * model = new QSqlTableModel();
+//    QSqlTableModel * model = new QSqlTableModel();
 
-    model->setTable(tableName);
-    model->select();
+//    model->setTable(tableName);
+//    model->select();
 
-    model->setEditStrategy(QSqlTableModel::OnFieldChange);
+    //    model->setEditStrategy(QSqlTableModel::OnFieldChange);
+    char*  ch;
+    QByteArray ba = tableName.toLatin1();
+    ch = ba.data();
 
+    QStandardItemModel *model = new QStandardItemModel();
+
+    QStringList headerList;// = getHeaderList(tableName);
+
+    TableInfo* tb = cdbs->getTable(ch);
+
+    if (tb == NULL) {
+        printf("error: no table\n");
+        return;
+    }
+
+    int kk = tb->cn;
+    for (int i = 0; i < kk; ++ i) {
+        headerList.append(tb->col[i].name);
+    }
+
+    int colLength  = headerList.length();
+    for (int i = 0 ; i < colLength ; i++){
+        model->setHorizontalHeaderItem(i, new QStandardItem( headerList[i]  ));
+    }
+
+    QList <QStringList> dataList;// = getDataList(tableName);
+    for (int i = 0 ; i < dataList .length(); i++){
+        for (int j = 0 ; j < colLength ; j++){
+            model->setItem(i, j, new QStandardItem(dataList[i][j]));
+        }
+    }
+    //利用setModel()方法将数据模型与QTableView绑定
     ui->tableView->setModel(model);
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->resizeColumnsToContents();
 }
 
@@ -292,15 +331,17 @@ void MainWindow::on_CreateTable_clicked()
      *
      * @return void
      */
-    if(db.isOpen())
-    {
-        qDebug() << "creating table..";
-        tableCre = new CreateTable(0, query);
-        connect(tableCre, SIGNAL(done()), this, SLOT(onTableCreate()));
-        tableCre->show();
-    }
-    else
-        ui->status->setText("No database connection!");
+//    if(db.isOpen())
+//    {
+//        qDebug() << "creating table..";
+//        tableCre = new CreateTable(0, query);
+//        connect(tableCre, SIGNAL(done()), this, SLOT(onTableCreate()));
+//        tableCre->show();
+//    }
+
+     //ui->status->setText("No database connection!");
+
+
 }
 
 void MainWindow::on_DeleteTable_clicked()
@@ -317,15 +358,21 @@ void MainWindow::on_DeleteTable_clicked()
      *
      * @return void
      */
-    if (db.isOpen())
-    {
-        qDebug() << "deleting table..";
-        tableDel = new deleteTable(0, query, ui->comboBox->currentText());
-        connect(tableDel, SIGNAL(done()), this, SLOT(onTableDelete()));
-        tableDel->show();
-    }
-    else
-        ui->status->setText("No database connection!");
+//    if (db.isOpen())
+//    {
+//        qDebug() << "deleting table..";
+//        tableDel = new deleteTable(0, query, ui->comboBox->currentText());
+//        connect(tableDel, SIGNAL(done()), this, SLOT(onTableDelete()));
+//        tableDel->show();
+//    }
+//    else
+//        ui->status->setText("No database connection!");
+        QString str = ui->comboBox->currentText();
+        char*  ch;
+        QByteArray ba = str.toLatin1();
+        ch = ba.data();
+        cdbs->dropTB(ch);
+        updateComboBox();
 }
 
 void MainWindow::onTableCreate()

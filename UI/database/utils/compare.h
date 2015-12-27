@@ -5,17 +5,17 @@
  *      Author: lql
  */
 
-#ifndef PARSER_H_
-#define PARSER_H_
+#ifndef COMPARE_H_
+#define COMPARE_H_
 
-#include "../indexManager/tree.h"
 #include "pagedef.h"
 #include <cstring>
+
 using namespace std;
 #define LL_TYPE 0
 #define DB_TYPE 1
 #define ST_TYPE 2
-#define L 0
+#define LLL 0
 #define G 3
 #define LE 1
 #define GE 2
@@ -23,7 +23,7 @@ using namespace std;
 #define IS 5
 #define UNI 0
 #define UNUNI 1
-#define N 0
+#define NNN 0
 #define UN 1
 #define ALL 0
 #define RANGE 1

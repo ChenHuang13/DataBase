@@ -351,7 +351,7 @@ public:
                     strcpy(create.name[n], prev);
                     prev = next + 1;
                     next = paser.getWord(prev, '(');
-                    create.c[n].nt = N;
+                    create.c[n].nt = NNN;
                     create.c[n].ut = UNUNI;
                     switch (*prev) {
                         case 'v':

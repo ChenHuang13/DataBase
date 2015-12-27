@@ -7,6 +7,7 @@
 
 #include "define.h"
 
+
 void setMin(uchar* a, int dt, int cl) {
     switch (dt) {
         case LL_TYPE:
@@ -36,7 +37,7 @@ void setMax(uchar* b, int dt, int cl) {
 
 void getRange(void* src, int sl, int cl, int dt, int cp) {
     switch (cp) {
-        case L:
+        case LLL:
             cr.rt = RANGE;
             memcpy(cr.b, src, sl);
             memset(cr.b + cl, 0xff, 8);

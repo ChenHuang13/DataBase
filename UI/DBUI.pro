@@ -9,7 +9,7 @@ QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = SQLITE_WIEVER_4
+TARGET = DBUI
 TEMPLATE = app
 
 
@@ -44,7 +44,8 @@ HEADERS  += mainwindow.h \
     database/dataBaseManager.h \
     database/define.h \
     database/parser.h \
-    database/tool.h
+    database/tool.h \
+    common.h
 
 
 FORMS    += mainwindow.ui \

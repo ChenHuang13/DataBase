@@ -137,7 +137,7 @@ struct Paser{
                         cp = LE;
                         ++next;
                     } else {
-                        cp = L;
+                        cp = LLL;
                     }
                     break;
                 case 'i':

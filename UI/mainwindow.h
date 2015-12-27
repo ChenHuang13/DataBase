@@ -3,8 +3,12 @@
 
 #include <QMainWindow>
 #include <QtSql>
+#include <QInputDialog>
 #include <createtable.h>
 #include <deletetable.h>
+
+
+
 
 namespace Ui {
 class MainWindow;
@@ -17,7 +21,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
 private slots:
     void on_OpenDatabase_clicked();
 
@@ -53,8 +56,6 @@ private:
     QSqlQuery *query;
     deleteTable * tableDel;
     CreateTable * tableCre;
-
-
 };
 
 #endif // MAINWINDOW_H

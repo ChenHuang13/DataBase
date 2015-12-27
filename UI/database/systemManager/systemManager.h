@@ -84,18 +84,25 @@ public:
     }
 
     //使用一个数据库
-    bool usedb(char* name) {
+    bool usedb( char* name) {
+
+       // qDebug() << name;
         multiset<char*, Cmp>::iterator it = dbs.find(name);
         if (it == dbs.end()) {
+           // delete name;
             return false;
         }
         if (cdbs != NULL){
-            if (strcmp(cdbs->dname, name) == 0) return false;
+            if (strcmp(cdbs->dname, name) == 0){
+                // delete name;
+                return false;
+            }
             closedb();
         }
         cdbs = new DatabaseInfo(
                 name, fm, bpm, bpl
         );
+        //delete name;
         return true;
     }
 

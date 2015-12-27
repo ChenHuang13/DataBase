@@ -11,6 +11,7 @@
 #include "tableInfo.h"
 #include <vector>
 #include <fstream>
+#include <QStringList>
 
 using namespace std;
 
@@ -121,6 +122,16 @@ struct DatabaseInfo {
         }
         close(fd);
         fm->closeFile(fid);
+    }
+
+    QStringList getTableList(){
+        QStringList list;
+        map<char*, TableInfo *, Cmp>::iterator it;
+        for (it = cmap.begin(); it != cmap.end(); ++ it) {
+            qDebug()<<it->second->tn;
+           list.append( QString(it->second->tn) );
+        }
+        return list;
     }
 
     //打印表名

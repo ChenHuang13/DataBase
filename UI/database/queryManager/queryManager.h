@@ -87,7 +87,7 @@ public:
                     if (*prev != 'n') {
                         long long d = atoll(prev);
                         memcpy(start, &d, len);
-                    } else if (nt == N) {
+                    } else if (nt == NNN) {
                         bm ^= (1 << cc);
                     } else {
                         printf("error: insert null value, but not null type\n");
@@ -107,7 +107,7 @@ public:
                         *(start + k) = '\0';
                         //printf("data\t%s\n", start);
                         while (*next != e) ++next;
-                    } else if (*prev == 'n' && nt == N) {
+                    } else if (*prev == 'n' && nt == NNN) {
                         bm ^= (1 << cc);
                         next = prev + 1;
                         while (*next != e) ++next;
