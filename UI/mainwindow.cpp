@@ -224,6 +224,7 @@ void MainWindow::showTable(QString tableName)
 
     TableInfo* tb = cdbs->getTable(ch);
 
+
     if (tb == NULL) {
         printf("error: no table\n");
         return;
