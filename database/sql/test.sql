@@ -52,5 +52,5 @@ SELECT  average id from publisher WHERE id< 200020;
 
 
 SELECT  month from publisher WHERE id< 200020;
-
+DESC publisher;
 

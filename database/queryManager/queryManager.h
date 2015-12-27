@@ -5,6 +5,7 @@
 #ifndef DATABASE_QUERYMANAGER_H
 #define DATABASE_QUERYMANAGER_H
 
+#include <regex>
 #include "../define.h"
 #include "../parser.h"
 #include "print.h"
@@ -16,6 +17,11 @@ enum extop {
 
 class QueryManager {
 public:
+    static void like(bool &like_flag, const char* str1, string &str2) {
+        regex pattern(str2);
+        like_flag &= regex_match(str1, pattern);
+    }
+
     static void exec_delete(char *sql) {
         char *prev, *next;
         prev = sql;
@@ -236,10 +242,15 @@ public:
                 int s = ans1[i].second;
                 //cout << p <<"\t"<<s<<"\t"<<i - m<<endl;
                 uchar *it = ctb->getItem(p, s);
-                if (all) printItem(ctb, it);
-                else printCols1(it);
-                if (extop_flag == extop_nop) printf("\n");
-                countt++;
+                bool like_flag = true;
+                for (int j = 0; j < like_col.size(); ++j)
+                    like(like_flag, (char*)(it + ctb->col[like_col[j]].cs), like_string[j]);
+                if (like_flag) {
+                    if (all) printItem(ctb, it);
+                    else printCols1(it);
+                    if (extop_flag == extop_nop) printf("\n");
+                    countt++;
+                }
             }
             if (extop_flag == extop_nop) {
                 printf("counted:%d\n", countt);
