@@ -9,6 +9,8 @@
 #include "../parser.h"
 #include "print.h"
 #include "../tool.h"
+#include <QList>
+#include <QString>
 
 enum extop {
     extop_nop, extop_sum, extop_average, extop_max, extop_min
@@ -128,6 +130,71 @@ public:
         next++;
         while (*next == ' ') ++next;
         state = (*next == ';') ? START : INSERT;
+    }
+
+    static QList<QStringList> getDataList(QString tableName) {
+
+        char*  ch;
+        QList<QStringList> list;
+        QByteArray ba = tableName.toLatin1();
+        ch = ba.data();
+        ctb = NULL;
+
+        all = true;
+        ctb = cdbs->getTable(ch);
+
+        if (ctb == NULL){
+            qDebug()<<ch << " doesn't exist!" <<endl;
+            return list;
+        }
+
+        tname.clear();
+        cname.clear();
+        tabs.clear();
+
+        cname.push_back("*");
+       tabs.push_back(ctb);
+
+       //paser.exec_where(next + 1);
+
+       tab1.clear();
+       col1.clear();
+       op.clear();
+
+       int n = tabs.size();
+
+       ctb->rangeAll();
+
+        paser.getCost();
+        ans1.clear();
+
+        //cout << cidx << endl;
+        ctb->select(cidx, ctb->range, ans1);
+
+        int m = ans1.size();
+        qDebug() << "Record num:" <<m <<endl;
+        for (int nn = 0; nn < m; ++nn) {
+            QStringList stringList;
+            int p = ans1[nn].first;
+            int s = ans1[nn].second;
+            uchar *it = ctb->getItem(p, s);
+            memcpy(&bm, it, 4);
+            for (int i = 0; i < ctb->cn; ++ i){
+                if ((bm & (1 << i)) != 0) {
+                    stringList.append("null");
+                } else {
+                    if (ctb->col[i].cb.dt == LL_TYPE) {
+                        ll v;
+                        memcpy(&v, it + ctb->col[i].cs, 8);
+                        stringList.append( QString::number ( long(v) ) );
+                    } else {
+                        stringList.append( (char*)(it + ctb->col[i].cs) );
+                    }
+                }
+            }
+            list.append(stringList);
+        }
+        return list;
     }
 
     static void exec_select(char *sql) {
@@ -442,9 +509,8 @@ public:
     }
 
 
-    static
 
-    void exec_update(char *sql) {
+    static void exec_update(char *sql) {
         if (cdbs == NULL) {
             printf("error : no db\n");
             return;
