@@ -376,11 +376,12 @@ public:
                             next = paser.getWord(prev, ')');
                             create.c[n].cl = atoi(prev) + 1;
                             break;
-                        default:
+                        case 'f':
                             create.c[n].dt = DB_TYPE;
                             prev = next + 1;
                             next = paser.getWord(prev, ')');
                             create.c[n].cl = 8;
+                            break;
                     }
                     next ++;
                     if (*next == ' ') {
