@@ -1,6 +1,7 @@
 # DataBase
-develop database
+Super database
 
-ide: CLion
-source code in /project
+ide: CLion & Qt5
+
+(>^ω^<)
 
