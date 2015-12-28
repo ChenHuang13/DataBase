@@ -1,0 +1,27 @@
+CREATE DATABASE orderDB;
+
+USE orderDB;
+
+CREATE TABLE publisher (
+  id int(10) NOT NULL
+);
+
+INSERT INTO publisher VALUES 
+ (1);
+
+INSERT INTO publisher VALUES 
+ (2);
+
+INSERT INTO publisher VALUES 
+ (4);
+
+INSERT INTO publisher VALUES 
+ (3);
+
+INSERT INTO publisher VALUES 
+ (5);
+
+SELECT  * from publisher WHERE id< 200020 ORDER BY id DESC;
+
+SELECT  * from publisher WHERE id< 200020 ORDER BY id ASEC;
+

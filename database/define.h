@@ -52,5 +52,7 @@ vector <int> like_col;
 vector <string> like_string;
 bool all;
 bool print_flag;
+int order_flag;
+int order_col;
 
 #endif //DATABASE_DEFINE_H

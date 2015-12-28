@@ -15,8 +15,39 @@ enum extop {
     extop_nop, extop_sum, extop_average, extop_max, extop_min
 };
 
+bool order_cmp(pair < int, int > A, pair < int, int > B) {
+    uchar* it1 = ctb->getItem(A.first, A.second);
+    uchar* it2 = ctb->getItem(B.first, B.second);
+    if (ctb->col[order_col].cb.dt == LL_TYPE) {
+        ll v1, v2;
+        memcpy(&v1, it1 + ctb->col[order_col].cs, 8);
+        memcpy(&v2, it2 + ctb->col[order_col].cs, 8);
+        if (order_flag == 1)
+            return !(v1 < v2);
+        else
+            return v1 < v2;
+    } else if (ctb->col[order_col].cb.dt == DB_TYPE) {
+        double v1, v2;
+        memcpy(&v1, it1 + ctb->col[order_col].cs, 8);
+        memcpy(&v2, it2 + ctb->col[order_col].cs, 8);
+        if (order_flag == 1)
+            return !(v1 < v2);
+        else
+            return v1 < v2;
+    } else {
+        uchar* v1, *v2;
+        v1 = it1 + ctb->col[order_col].cs;
+        v2 = it2 + ctb->col[order_col].cs;
+        if (order_flag == 1)
+            return strcmp((char*)v1, (char*)v2) > 0;
+        else
+            return strcmp((char*)v1, (char*)v2) < 0;
+    }
+}
+
 class QueryManager {
 public:
+
     static void like(bool &like_flag, const char* str1, string &str2) {
         regex pattern(str2);
         like_flag &= regex_match(str1, pattern);
@@ -253,6 +284,8 @@ public:
             query_max = llmin;
             query_min = llmax;
             print_flag = extop_flag == extop_nop;
+            if (order_flag > 0)
+                sort(ans1.begin(), ans1.end(), order_cmp);
 
             for (int i = 0; i < m; ++i) {
                 int p = ans1[i].first;
@@ -471,9 +504,7 @@ public:
     }
 
 
-    static
-
-    void exec_update(char *sql) {
+    static void exec_update(char *sql) {
         if (cdbs == NULL) {
             printf("error : no db\n");
             return;

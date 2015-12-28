@@ -84,6 +84,8 @@ struct Paser{
         op.clear();
         like_col.clear();
         like_string.clear();
+        order_flag = 0;
+        order_col = 0;
         int n = tabs.size();
         char* prev, *next;
         prev = sql;
@@ -231,6 +233,31 @@ struct Paser{
             next ++;
             prev = getWord(next, ' ');
             prev ++;
+
+            next = prev;
+            if (*next == 'B') {
+                order_flag = 1;
+                next += 2;
+                while (*next == ' ') ++next;
+                prev = next;
+                next = prev + 1;
+                while (*next != '.' && *next != ' ' && *next != ';') ++ next;
+                *next = '\0';
+                ++next;
+                int kkk = ctb->getcolid(prev);
+                if (kkk == -1) {
+                    errwhere = 1;
+                    printf("error:no column\n");
+                    return;
+                }
+                order_col = kkk;
+                if (*next == 'D') {
+                    order_flag = 1;
+                } else {
+                    order_flag = 2;
+                }
+                break;
+            }
         }
     }
 
