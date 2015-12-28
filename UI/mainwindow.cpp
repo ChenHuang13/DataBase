@@ -480,3 +480,16 @@ void MainWindow::on_excuteSQL_clicked()
         showTable(ui->comboBox->currentText());
     }
 }
+
+void MainWindow::on_excuteFile_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open SQL File"), QString(),
+                                                        tr("SQL Files (*.sql)"));
+
+       // qDebug() << fileName;
+        if (!fileName.isEmpty()) {
+            databaseManager.paseFile( fileName.toStdString());
+            updateComboBox();
+            showTable(ui->comboBox->currentText());
+        }
+}

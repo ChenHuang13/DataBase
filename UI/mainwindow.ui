@@ -98,9 +98,16 @@
           </spacer>
          </item>
          <item>
+          <widget class="QPushButton" name="excuteFile">
+           <property name="text">
+            <string>Excute file...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="excuteSQL">
            <property name="text">
-            <string>excute sql...</string>
+            <string>Excute sql...</string>
            </property>
           </widget>
          </item>

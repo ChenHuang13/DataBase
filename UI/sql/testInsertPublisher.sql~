@@ -1,0 +1,14 @@
+INSERT INTO publisher VALUES 
+ (1);
+
+INSERT INTO publisher VALUES 
+ (2);
+
+INSERT INTO publisher VALUES 
+ (3);
+
+INSERT INTO publisher VALUES 
+ (4);
+
+INSERT INTO publisher VALUES 
+ (5);

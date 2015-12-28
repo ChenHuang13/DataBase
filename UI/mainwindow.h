@@ -53,6 +53,8 @@ private slots:
 
     void on_excuteSQL_clicked();
 
+    void on_excuteFile_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSqlDatabase db;
